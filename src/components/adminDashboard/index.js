@@ -68,22 +68,14 @@ const appbarButton={
     display: 'inline-block',
 }
 
-// const Category = [
-//     {value: 0, label: "Action & Adventure"},
-//     {value: 1, label: "Comedy"},
-//     {value: 2, label: "Music"},
-//     {value: 3, label: "Sports"},
-//     {value: 4, label: "Movies"},
-//     {value: 5, label: "Science & Technology"},
-//     {value: 6, label: "Programming"},
-// ]
+const Categories = ["Action & Adventure","Comedy","Music","Sports","Movies","Science & Technology","Programming"];
 
 function AdminDashboard(props) {
 
 
     const [title,setTitle] = useState('');
     const [description,setDescription] = useState('');
-    const [category,setCategory] = useState('Action & Adventure');
+    const [category,setCategory] = useState('');
     const [videoId,setVideoId] = useState('');
     const [thumbnail,setThumbnail] = useState('');
 
@@ -99,9 +91,6 @@ function AdminDashboard(props) {
         if(name === 'description'){
             setDescription(value)
         }
-        if(name === 'category'){
-            setCategory(value)
-        }
         if(name === 'videoId'){
             setVideoId(value)
         }
@@ -115,6 +104,10 @@ function AdminDashboard(props) {
             }
 
         }
+    }
+    const handleCategory = (e) =>{
+        console.log("category", e.target.value)
+        setCategory(e.target.value)
     }
 
     const handleSubmit = (e) =>{
@@ -185,7 +178,7 @@ function AdminDashboard(props) {
                                     label="Description"
                                     placeholder="Enter description"
                                     multiline
-                                    rows={4}
+                                    rows={5}
                                     variant="outlined"
                                     fullWidth
                                 />
@@ -194,21 +187,16 @@ function AdminDashboard(props) {
                                 <FormControl variant="outlined" fullWidth>
                                     <InputLabel id="demo-simple-select-outlined-label">Category</InputLabel>
                                     <Select 
-                                    name='Category'
+                                    name="category"
+                                    onChange={handleCategory}
                                     labelId="demo-simple-select-outlined-label"
                                     id="demo-simple-select-outlined"
                                     label="Category"
+                                    displayEmpty
                                     > 
-                                    <MenuItem value="">
-                                        
-                                    </MenuItem>
-                                    <MenuItem value={0}>Action & Adventure</MenuItem>
-                                    <MenuItem value={1}>Comedy</MenuItem>
-                                    <MenuItem value={2}>Music</MenuItem>
-                                    <MenuItem value={3}>Sports</MenuItem>
-                                    <MenuItem value={4}>Movies</MenuItem>
-                                    <MenuItem value={5}>Science & Technology</MenuItem>
-                                    <MenuItem value={6}>Programming</MenuItem>
+                                    {Categories.map((item, index)=>(
+                                        <MenuItem key={index} value={item}>{item}</MenuItem>
+                                    ))}
                                     </Select>
                                 </FormControl>
                             </div>
@@ -226,7 +214,7 @@ function AdminDashboard(props) {
                                 variant="outlined"
                             />
                             </div>
-                            
+
                             <div style={{margin:'15px'}}>
                                 <TextField onChangeCapture={handleInputChange} name="videoId" id="outlined-basic" label="VideoId" placeholder="Enter VideoId" variant="outlined" fullWidth/>
                             </div>
