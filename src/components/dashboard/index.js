@@ -1,23 +1,45 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Appbar from '../appbar'
-import {Image} from 'cloudinary-react';
-const thumnailId = 'thumbnails/wxopwcqyd921onsqagwv';
-export default function Dashboard() {
+import { get_video } from '../../actions/videos.actions';
+import { Image } from 'cloudinary-react';
+import { connect } from 'react-redux';
+
+
+const root={
+    backgroundImage: "linear-gradient(to top right, #291524, black)",
+    backgroundSize: 'cover',
+    height: '102vh',
+    boxSizing: 'border-box'
+}
+
+function Dashboard (props) {
+
+    
+    useEffect(()=>{
+        console.log("useEffect");
+        props.get_video();
+    },[]);
+    console.log('videolist - ',props.videos)
     return (
-        <div style={{ backgroundImage: "linear-gradient(to top right, #291524, black)",
-                    backgroundSize: 'cover',
-                    height: '100vh',
-                    boxSizing: 'border-box'}}>
+        <div style={root}>
             <Appbar />
-            <Image
-                height={137}
-                width={244}
-                crop="scale"
-                cloudName="domzykbc2"
-                publicId={thumnailId}
-            />
+            {props.videos.videos.length > 0 && props.videos.videos.map((item)=>(
+                <div>
+                    <Image
+                        cloudName = "domzykbc2"
+                        publicId ={item.thumbnail}
+                        crop = "scale"
+                        height ={138}
+                        width ={246}
+                    />
+                    <span><h3>{item.title}</h3></span>
+                </div>
+            ))}
         </div>
     )
 }
 
-// comment added by karan
+const MapStatetoProps = (state) =>({
+    videos: state.videos
+})
+export default connect(MapStatetoProps,{get_video})(Dashboard);

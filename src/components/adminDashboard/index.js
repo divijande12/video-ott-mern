@@ -4,8 +4,11 @@ import React, { useState } from 'react';
 import PublishRoundedIcon from '@material-ui/icons/PublishRounded';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/images/Untitled.png';
-import add_video from '../../actions/videos.actions'
+import  { add_video } from '../../actions/videos.actions'
 import { connect } from 'react-redux';
+import { useForm } from 'react-hook-form';
+import { FormHelperText } from '@material-ui/core';
+import { useToasts } from 'react-toast-notifications';
 
 
 
@@ -45,6 +48,7 @@ const appbarRoot={
 }
 const appbar={
     background: 'rgba(155, 40, 123, 0.3)',
+    zIndex: 0,
 }
 const titleStyle={
     color: '#9B287B',
@@ -52,7 +56,7 @@ const titleStyle={
     marginLeft: '-30px',
     marginTop: '9px',
     fontSize: '33px',
-    letterSpacing: '4px',
+    letterSpacing: '3px',
     fontFamily: 'Style Script, cursive',
 }
 const container={
@@ -70,7 +74,7 @@ const appbarButton={
 
 const Categories = ["Action & Adventure","Comedy","Music","Sports","Movies","Science & Technology","Programming"];
 
-function AdminDashboard(props) {
+function AdminDashboard (props) {
 
 
     const [title,setTitle] = useState('');
@@ -78,6 +82,15 @@ function AdminDashboard(props) {
     const [category,setCategory] = useState('');
     const [videoId,setVideoId] = useState('');
     const [thumbnail,setThumbnail] = useState('');
+
+    const {
+        register,
+        handleSubmit,
+        control,
+        formState: {errors}
+    } = useForm();
+    const {addToast} = useToasts();
+    
 
     const handleInputChange = (e) =>{
         e.preventDefault()
@@ -100,37 +113,30 @@ function AdminDashboard(props) {
             reader.readAsDataURL(file)
             reader.onloadend = ()=>{
                 setThumbnail(reader.result)
-                console.log(reader.result)
             }
 
         }
     }
     const handleCategory = (e) =>{
-        console.log("category", e.target.value)
+        console.log(e)
+        console.log("category - ", e.target.value)
         setCategory(e.target.value)
     }
 
-    const handleSubmit = (e) =>{
-        e.preventDefault();
-        if(validate()){
-            console.log('karan - videoId - ', videoId);
-            props.add_video({
-                title,
-                description,
-                category,
-                thumbnail,
-                videoId,
-            });
-        }
+    const submitData = (e) =>{
+        props.add_video({
+            title,
+            description,
+            category,
+            thumbnail,
+            videoId,
+        });
+        addToast("Video Uploaded Successfully",{
+            appearance:'success',
+            autoDismiss: true,
+        })
     }
 
-    const validate=()=> {
-        if(title === '') {
-            return false;
-        }
-        
-        return true;
-    }
 
 
     return (
@@ -167,9 +173,19 @@ function AdminDashboard(props) {
                                 Upload Video
                             </h2>
                         </Grid>
-                        <form onSubmit={handleSubmit}> 
+                        <form onSubmit={handleSubmit(submitData)}> 
                             <div style={{margin:'15px'}}>
-                                <TextField onChangeCapture={handleInputChange} name="title" id="outlined-basic" label="Title" placeholder="Enter Title" variant="outlined" fullWidth />
+                                <TextField onChangeCapture={handleInputChange} 
+                                    name="title" 
+                                    id="outlined-basic" 
+                                    label="Title" 
+                                    placeholder="Enter Title" 
+                                    variant="outlined" 
+                                    {...register("title",{required:"Title is required"})}
+                                    error={Boolean(errors.title)}
+                                    helperText={errors.title?.message}
+                                    fullWidth 
+                                />
                             </div>
                             <div style={{margin:'15px'}}>
                                 <TextField onChangeCapture={handleInputChange}
@@ -180,11 +196,14 @@ function AdminDashboard(props) {
                                     multiline
                                     rows={5}
                                     variant="outlined"
+                                    {...register("description",{required:"Description is required"})}
+                                    error={Boolean(errors.description)}
+                                    helperText={errors.description?.message}
                                     fullWidth
                                 />
                             </div>    
                             <div style={{margin:'15px'}}>
-                                <FormControl variant="outlined" fullWidth>
+                                <FormControl variant="outlined" fullWidth error={Boolean(errors.category)}>
                                     <InputLabel id="demo-simple-select-outlined-label">Category</InputLabel>
                                     <Select 
                                     name="category"
@@ -193,12 +212,16 @@ function AdminDashboard(props) {
                                     id="demo-simple-select-outlined"
                                     label="Category"
                                     displayEmpty
+                                    control={control}
+                                    // rules={{...register("category",{required:"Category is required"})}}
+                                                                     
                                     > 
                                     {Categories.map((item, index)=>(
                                         <MenuItem key={index} value={item}>{item}</MenuItem>
                                     ))}
                                     </Select>
                                 </FormControl>
+                                <FormHelperText style={{color:"#f44336", marginLeft:"12px"}}>{errors.category?.message}</FormHelperText>
                             </div>
                             <div style={{margin:'15px'}}>
                             <TextField onChangeCapture={handleInputChange}
@@ -211,12 +234,25 @@ function AdminDashboard(props) {
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
+                                {...register("thumbnail",{required:"Thumbnail is required"})}
+                                error={Boolean(errors.thumbnail)}
+                                helperText={errors.thumbnail?.message}
                                 variant="outlined"
                             />
                             </div>
 
                             <div style={{margin:'15px'}}>
-                                <TextField onChangeCapture={handleInputChange} name="videoId" id="outlined-basic" label="VideoId" placeholder="Enter VideoId" variant="outlined" fullWidth/>
+                                <TextField onChangeCapture={handleInputChange} 
+                                    name="videoId" 
+                                    id="outlined-basic" 
+                                    label="VideoId" 
+                                    placeholder="Enter VideoId" 
+                                    variant="outlined" 
+                                    fullWidth
+                                    {...register("videoId",{required:"VideoId is required"})}
+                                    error={Boolean(errors.videoId)}
+                                    helperText={errors.videoId?.message}
+                                />
                             </div>
                             <div style={buttonStyle}> 
                                 <Button style={{backgroundColor: '#5C164E', color: '#E7EBC5'}} variant="contained" type="submit" fullWidth startIcon={<PublishRoundedIcon />}>Upload</Button>

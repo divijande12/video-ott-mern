@@ -18,7 +18,7 @@ const paperStyle = {
     margin: '15px auto',
     borderRadius: '25px',
     backgroundColor: 'rgba(230, 219, 228,0.9)',
-    marginTop: '20px',
+    marginTop: '30px',
 }
 const avatarStyle ={
     backgroundColor: '#5C164E',
@@ -33,19 +33,15 @@ const buttonStyle={
 const signinStyle= {
     marginLeft: '20px'
 }
-const errorStyle={
-    color: 'red',
-    padding: '1px',
-    fontSize: 'xx-small',
-}
 const logoStyle={
     display:'flex',
+    marginTop: '3px',
 
 }
 const container={
     display: 'flex',
-    margin: '5px',
-    height: '9vh',
+    margin: '0px',
+    height: '10vh',
     width: '100%',
     background: 'rgba(64, 32, 57, 0.8)'
 }
@@ -53,13 +49,14 @@ const titleStyle={
     color: '#9B287B',
     margin: '5px',
     marginLeft: '-30px',
-    marginTop: '3px',
+    marginTop: '5px',
     padding: '2px',
-    fontSize: '35px',
+    fontSize: '37px',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    fontFamily: 'Pacifico, cursive',
+    fontFamily: 'Style Script, cursive',
+    letterSpacing: '3px',
     fontWeight: 'bold',
     borderRadius: '10px',
 }
@@ -135,7 +132,7 @@ export default function Register() {
                     <div style={logoStyle}>
                         <img src={logo} width="120px" height="60px" alt=""/>
                     </div>
-                    <h2 style={titleStyle}>PoP<span style={{color:'#B76DA3'}}>fliX</span></h2>
+                    <h2 style={titleStyle}>PoP<span style={{color:'#B76DA3'}}>FliX</span></h2>
                 </div>
             <Paper elevation={10} style={paperStyle}>
                 <Grid align="center">
@@ -148,27 +145,79 @@ export default function Register() {
                 </Grid>
                 <form onSubmit={handleSubmit(submitData)}>
                     <div>
-                        <TextField id="standard-basic" label="Firstname" placeholder="Enter Firstname" {...register("firstname",{required: true})} onChangeCapture={handleInputChange} fullWidth />
-                        <p style={errorStyle}> {errors.firstname && "Firstname is required"} </p>
+                        <TextField 
+                            style={{margin:'5px auto'}}
+                            id="standard-basic" 
+                            label="Firstname" 
+                            placeholder="Enter Firstname" 
+                            {...register("firstname",{required: "Firstname is required"})}
+                            error={Boolean(errors.firstname)} 
+                            helperText={errors.firstname?.message}
+                            onChangeCapture={handleInputChange} 
+                            fullWidth 
+                        />
                     </div>
                     <div>
-                        <TextField id="standard-basic" label="Lastname" placeholder="Enter Lastname" {...register("lastname",{required: true})} onChangeCapture={handleInputChange} fullWidth />
-                        <p style={errorStyle}> {errors.lastname && "Lastname is required"} </p>
+                        <TextField 
+                            style={{margin:'5px auto'}}
+                            id="standard-basic" 
+                            label="Lastname" 
+                            placeholder="Enter Lastname" 
+                            {...register("lastname",{required: "Lastname is required"})}
+                            error={Boolean(errors.lastname)} 
+                            helperText={errors.lastname?.message} 
+                            onChangeCapture={handleInputChange} 
+                            fullWidth 
+                        />
                     </div>
                     <div>
-                        <TextField id="standard-basic" label="Email" placeholder="Enter Email" type="email" {...register("email",{required: true})} onChangeCapture={handleInputChange} fullWidth />
-                        <p style={errorStyle}> {errors.email && "Email is required"} </p>
+                        <TextField 
+                            style={{margin:'5px auto'}}
+                            id="standard-basic" 
+                            label="Email" 
+                            placeholder="Enter Email" 
+                            type="email" 
+                            {...register("email",{required: "Email is required"})}
+                            error={Boolean(errors.email)} 
+                            helperText={errors.email?.message} 
+                            onChangeCapture={handleInputChange} 
+                            fullWidth 
+                        />
                     </div>
                     <div>
-                        <TextField id="standard-basic" label="Username" placeholder="Enter Username" {...register("username",{required: true})} onChangeCapture={handleInputChange} fullWidth />
-                        <p style={errorStyle}> {errors.username && "Username is required"} </p>
+                        <TextField 
+                            style={{margin:'5px auto'}}
+                            id="standard-basic" 
+                            label="Username" 
+                            placeholder="Enter Username" 
+                            {...register("username",{required: "Username is required"})}
+                            error={Boolean(errors.username)} 
+                            helperText={errors.username?.message} 
+                            onChangeCapture={handleInputChange} 
+                            fullWidth 
+                        />
                     </div>
                     <div>
-                        <TextField id="standard-basic" label="Password" placeholder="Enter Password" type="password" {...register("password",{required: true})} onChangeCapture={handleInputChange} fullWidth />
-                        <p style={errorStyle}> {errors.password && "Password is required"} </p>
+                        <TextField 
+                            style={{margin:'5px auto'}}
+                            id="standard-basic" 
+                            label="Password" 
+                            placeholder="Enter Password" 
+                            type="password" 
+                            {...register("password",{required: "Password is required"})}
+                            error={Boolean(errors.password)} 
+                            helperText={errors.password?.message} 
+                            onChangeCapture={handleInputChange} 
+                            fullWidth 
+                        />
                     </div>
 
-                        <Button style={buttonStyle} type="submit" variant="contained" startIcon={<LockOpenIcon />} fullWidth >
+                        <Button style={buttonStyle} 
+                            type="submit" 
+                            variant="contained" 
+                            startIcon={<LockOpenIcon />} 
+                            fullWidth 
+                        >
                             Register
                         </Button>
 

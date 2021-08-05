@@ -41,7 +41,8 @@ const titleStyle={
     marginLeft: '-30px',
     marginTop: '9px',
     fontSize: '30px',
-    fontFamily: 'Pacifico, cursive',
+    fontFamily: 'Style Script, cursive',
+    letterSpacing: '3px',
 }
 const container={
     display: 'flex',
@@ -123,7 +124,7 @@ export default function Appbar() {
                             <div style={logoStyle}>
                                 <img src={logo} width="115px" height="60px" alt=""/>
                             </div>
-                            <h2 style={titleStyle}>PoP<span style={{color:'#D2B2CB'}}>fliX</span></h2>
+                            <h2 style={titleStyle}>PoP<span style={{color:'#D2B2CB'}}>FliX</span></h2>
                         </div>
                 <Button color="inherit">
                     <Link to='/logout' style={{color: '#9B287B', textDecoration: 'none', fontFamily: 'sans-serif', fontWeight: 'bold',fontSize:'14px'}}>

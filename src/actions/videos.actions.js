@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { ADD_VIDEO, LOADING } from './types';
+import { ADD_VIDEO, LOADING, GET_VIDEO } from './types';
 
-const add_video = (data) =>dispatch => {
+export const add_video = (data) =>dispatch => {
     dispatch({type: LOADING})
     console.log('data - add_video() - ', data);
     axios.post('/api/videos/addVideo', data)
@@ -26,5 +26,28 @@ const add_video = (data) =>dispatch => {
         console.log('add_video() - err - ', err);
     });
 }
+export const get_video = (data) => dispatch =>{
+    dispatch({type: LOADING})
+    console.log('data - get_video() - ',data);
+    axios.get('/api/videos/getvideos',data)
+    .then((res)=>{
+        console.log('get_video - res -',res);
+        if(res.data.success){
+            dispatch({
+                type: GET_VIDEO,
+                videos: res.data.result,
+                message: '',
+            });
+        }else{
+            dispatch({
+                type: GET_VIDEO,
+                videos: null,
+                message: res.data.message,
+            });
+        }
+    })
+    .catch((err)=>{
+        console.log('add_video - ',err);
+    });
+}
 
-export default add_video;

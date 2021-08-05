@@ -38,11 +38,6 @@ const buttonStyle={
     fontWeight: 'bold',
     letterSpacing: '2px',
 }
-const errorStyle={
-    color: 'red',
-    padding: '1px',
-    fontSize: 'xx-small',
-}
 const headerStyle={
     color: "#5C164E",
     fontSize: "30px",
@@ -223,12 +218,31 @@ const Login=(props) => {
                     </Grid>
                     <form onSubmit={handleSubmit(submitData)}>
                         <div>
-                            <TextField id="standard-basic" label="Username" placeholder="Enter Username" {...register("username",{required: true})} onChangeCapture={handleInputChange} fullWidth />
-                            <p style={errorStyle}> {errors.username && "Username is required"} </p>
+                            <TextField 
+                                style={{margin:'5px auto'}}
+                                id="standard-basic" 
+                                label="Username" 
+                                placeholder="Enter Username" 
+                                {...register("username",{required: "Username is required"})}
+                                error={Boolean(errors.username)} 
+                                helperText={errors.username?.message} 
+                                onChangeCapture={handleInputChange} 
+                                fullWidth 
+                            />
                         </div>
                         <div>
-                            <TextField id="standard-basic" label="Password" placeholder="Enter Password" type="password" {...register("password",{required: true})} onChangeCapture={handleInputChange} fullWidth />
-                            <p style={errorStyle}> {errors.password && "Password is required"} </p>
+                            <TextField 
+                                style={{margin:'5px auto'}}
+                                id="standard-basic" 
+                                label="Password" 
+                                placeholder="Enter Password" 
+                                type="password" 
+                                {...register("password",{required: "Password is required"})}
+                                error={Boolean(errors.password)} 
+                                helperText={errors.password?.message} 
+                                onChangeCapture={handleInputChange} 
+                                fullWidth 
+                            />
                         </div>
                         <FormControlLabel control={
                             <Checkbox

@@ -1,4 +1,4 @@
-import { ADD_VIDEO, LOADING } from "../actions/types";
+import { ADD_VIDEO, GET_VIDEO, LOADING } from "../actions/types";
 
 
 const initialState = {
@@ -17,6 +17,12 @@ const videoReducer = (state = initialState, action) =>{
             return{
                 ...state,
                 videos: [...state.videos, action.video],
+                loading: false,
+            };
+        case GET_VIDEO:
+            return{
+                ...state,
+                videos: [...action.videos],
                 loading: false,
             };
         default:
