@@ -6,6 +6,7 @@ import Register from './components/Register';
 import Dashboard from './components/dashboard';
 import adminDashboard from './components/adminDashboard';
 import Logout from './components/Logout';
+import VideoPlayer from './components/VideoPlayer';
 
 
 
@@ -19,6 +20,7 @@ export default class App extends React.Component {
           <Route exact path="/register" component={Register} />
           <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/admin-dashboard" component={adminDashboard} />
+          <Route exact path="/video/play" component={VideoPlayer} />
           <Route exact path="/logout" component={Logout} />
         </Switch>
       </React.Fragment>

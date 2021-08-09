@@ -8,6 +8,7 @@ import 'react-multi-carousel/lib/styles.css';
 import { Container, Paper } from '@material-ui/core';
 
 
+
 const root={
     backgroundImage: "linear-gradient(to top right, #291524, black)",
     backgroundSize: 'cover',
@@ -21,7 +22,7 @@ const container ={
     
 }
 const paperstyle={
-    margin:'8px',
+    margin:'5px',
     height: 250,
     backgroundColor: 'rgba(230, 219, 228,0.1)',
     width: 285,
@@ -53,13 +54,19 @@ const responsive = {
 };
 function Dashboard (props) {
 
+    // const history = useHistory()
     
     useEffect(()=>{
-        console.log("useEffect");
         props.get_video();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
-    console.log('videolist - ',props.videos)
+
+    const handleClick = (videoId) => {
+        props.history.push("/video/play",{videoId: videoId})
+    }
+
+    console.log('videolist - ',props)
+
     return (
         <React.Fragment>
             <div style={root}>
@@ -76,7 +83,7 @@ function Dashboard (props) {
                         >
                         {props.videos.videos.length > 0 && props.videos.videos.map((item, index)=>(
                             <div key={index}>
-                                <Paper elevation={10} style={paperstyle}>
+                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId)}>
                                     <div>
                                         <Image 
                                             cloudName="domzykbc2"
@@ -99,9 +106,10 @@ function Dashboard (props) {
                             removeArrowOnDeviceType={["tablet", "mobile"]}
                             ssr={true}
                         >
-                        {props.videos.videos.length > 0 && props.videos.videos.map((item, index)=>(
+                        {props.videos.videos.length > 0 && props.videos.videos.filter(item=>item.category === 'Action & Adventure')
+                        .map((item, index)=>(
                             <div key={index}>
-                                <Paper elevation={10} style={paperstyle}>
+                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId)}>
                                     <div>
                                         <Image 
                                             cloudName="domzykbc2"
@@ -110,7 +118,163 @@ function Dashboard (props) {
                                             height={180}
                                             width={285}
                                         />
-                                        <h6 style={{fontSize:'13px',marginTop:'4px',textAlign:'center'}}>{item.title}</h6>
+                                        <h6 style={{fontSize:'13px',marginTop:'5px',textAlign:'center'}}>{item.title}</h6>
+                                    </div>
+                                </Paper>
+                            </div>
+                        ))}
+                        </Carousel>
+                        <h3 style={{color:'white'}}>Movies</h3>
+                        <Carousel
+                            responsive={responsive}
+                            swipeable={true}
+                            draggable={true}
+                            removeArrowOnDeviceType={["tablet", "mobile"]}
+                            ssr={true}
+                        >
+                        {props.videos.videos.length > 0 && props.videos.videos.filter(item=>item.category === 'Movies')
+                        .map((item, index)=>(
+                            <div key={index}>
+                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId)}>
+                                    <div>
+                                        <Image 
+                                            cloudName="domzykbc2"
+                                            public_id={item.thumbnail}
+                                            crop='scale'
+                                            height={180}
+                                            width={285}
+                                        />
+                                        <h6 style={{fontSize:'13px',marginTop:'5px',textAlign:'center'}}>{item.title}</h6>
+                                    </div>
+                                </Paper>
+                            </div>
+                        ))}
+                        </Carousel>
+                        <h3 style={{color:'white'}}>Sports</h3>
+                        <Carousel
+                            responsive={responsive}
+                            swipeable={true}
+                            draggable={true}
+                            removeArrowOnDeviceType={["tablet", "mobile"]}
+                            ssr={true}
+                        >
+                        {props.videos.videos.length > 0 && props.videos.videos.filter(item=>item.category === 'Sports')
+                        .map((item, index)=>(
+                            <div key={index}>
+                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId)}>
+                                    <div>
+                                        <Image 
+                                            cloudName="domzykbc2"
+                                            public_id={item.thumbnail}
+                                            crop='scale'
+                                            height={180}
+                                            width={285}
+                                        />
+                                        <h6 style={{fontSize:'13px',marginTop:'5px',textAlign:'center'}}>{item.title}</h6>
+                                    </div>
+                                </Paper>
+                            </div>
+                        ))}
+                        </Carousel>
+                        <h3 style={{color:'white'}}>Music</h3>
+                        <Carousel
+                            responsive={responsive}
+                            swipeable={true}
+                            draggable={true}
+                            removeArrowOnDeviceType={["tablet", "mobile"]}
+                            ssr={true}
+                        >
+                        {props.videos.videos.length > 0 && props.videos.videos.filter(item=>item.category === 'Music')
+                        .map((item, index)=>(
+                            <div key={index}>
+                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId)}>
+                                    <div>
+                                        <Image 
+                                            cloudName="domzykbc2"
+                                            public_id={item.thumbnail}
+                                            crop='scale'
+                                            height={180}
+                                            width={285}
+                                        />
+                                        <h6 style={{fontSize:'13px',marginTop:'5px',textAlign:'center'}}>{item.title}</h6>
+                                    </div>
+                                </Paper>
+                            </div>
+                        ))}
+                        </Carousel>
+                        <h3 style={{color:'white'}}>Comedy</h3>
+                        <Carousel
+                            responsive={responsive}
+                            swipeable={true}
+                            draggable={true}
+                            removeArrowOnDeviceType={["tablet", "mobile"]}
+                            ssr={true}
+                        >
+                        {props.videos.videos.length > 0 && props.videos.videos.filter(item=>item.category === 'Comedy')
+                        .map((item, index)=>(
+                            <div key={index}>
+                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId)}>
+                                    <div>
+                                        <Image 
+                                            cloudName="domzykbc2"
+                                            public_id={item.thumbnail}
+                                            crop='scale'
+                                            height={180}
+                                            width={285}
+                                        />
+                                        <h6 style={{fontSize:'13px',marginTop:'5px',textAlign:'center'}}>{item.title}</h6>
+                                    </div>
+                                </Paper>
+                            </div>
+                        ))}
+                        </Carousel>
+                        <h3 style={{color:'white'}}>Science & Technology</h3>
+                        <Carousel
+                            responsive={responsive}
+                            swipeable={true}
+                            draggable={true}
+                            removeArrowOnDeviceType={["tablet", "mobile"]}
+                            ssr={true}
+                        >
+                        {props.videos.videos.length > 0 && props.videos.videos.filter(item=>item.category === 'Science & Technology')
+                        .map((item, index)=>(
+                            <div key={index}>
+                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId)}>
+                                    <div>
+                                        <Image 
+                                            cloudName="domzykbc2"
+                                            public_id={item.thumbnail}
+                                            crop='scale'
+                                            height={180}
+                                            width={285}
+                                        />
+                                        <h6 style={{fontSize:'13px',marginTop:'5px',textAlign:'center'}}>{item.title}</h6>
+                                    </div>
+                                </Paper>
+                            </div>
+                        ))}
+                        </Carousel>
+                        <h3 style={{color:'white'}}>Programming</h3>
+                        <Carousel
+                            responsive={responsive}
+                            swipeable={true}
+                            draggable={true}
+                            removeArrowOnDeviceType={["tablet", "mobile"]}
+                            ssr={true}
+                        >
+                        {props.videos.videos.length > 0 && props.videos.videos.filter(item=>item.category === 'Programming')
+                        .map((item, index)=>(
+                            <div key={index}>
+                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId)}>
+                                    <div>
+                                        <Image 
+                                            cloudName="domzykbc2"
+                                            public_id={item.thumbnail}
+                                            crop='scale'
+                                            height={180}
+                                            width={285}
+                                        />
+                                        <h6 style={{fontSize:'13px',marginTop:'5px',textAlign:'center'}}>{item.title}</h6>
                                     </div>
                                 </Paper>
                             </div>
