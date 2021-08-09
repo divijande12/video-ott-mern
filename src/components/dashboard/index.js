@@ -30,7 +30,7 @@ const paperstyle={
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     cursor: 'pointer',
-    color: "white",
+    color: "#FBEFF7",
     fontFamily: "sans-serif"
 }
 
@@ -61,8 +61,8 @@ function Dashboard (props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
 
-    const handleClick = (videoId) => {
-        props.history.push("/video/play",{videoId: videoId})
+    const handleClick = (videoId,title,description) => {
+        props.history.push("/video/play",{videoId: videoId, title:title, description:description})
     }
 
     console.log('videolist - ',props)
@@ -73,7 +73,7 @@ function Dashboard (props) {
                 <Appbar />
                 <div style={container}>
                     <Container fixed maxWidth='xl'>
-                        <h3 style={{color:'white'}}>All Videos</h3>
+                        <h3 style={{color:'#FBEFF7'}}>All Videos</h3>
                         <Carousel
                             responsive={responsive}
                             swipeable={true}
@@ -83,7 +83,7 @@ function Dashboard (props) {
                         >
                         {props.videos.videos.length > 0 && props.videos.videos.map((item, index)=>(
                             <div key={index}>
-                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId)}>
+                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId, item.title, item.description)}>
                                     <div>
                                         <Image 
                                             cloudName="domzykbc2"
@@ -98,7 +98,7 @@ function Dashboard (props) {
                             </div>
                         ))}
                         </Carousel>
-                        <h3 style={{color:'white'}}>Action & Adventure</h3>
+                        <h3 style={{color:'#FBEFF7'}}>Action & Adventure</h3>
                         <Carousel
                             responsive={responsive}
                             swipeable={true}
@@ -109,7 +109,7 @@ function Dashboard (props) {
                         {props.videos.videos.length > 0 && props.videos.videos.filter(item=>item.category === 'Action & Adventure')
                         .map((item, index)=>(
                             <div key={index}>
-                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId)}>
+                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId, item.title, item.description)}>
                                     <div>
                                         <Image 
                                             cloudName="domzykbc2"
@@ -124,7 +124,7 @@ function Dashboard (props) {
                             </div>
                         ))}
                         </Carousel>
-                        <h3 style={{color:'white'}}>Movies</h3>
+                        <h3 style={{color:'#FBEFF7'}}>Movies</h3>
                         <Carousel
                             responsive={responsive}
                             swipeable={true}
@@ -135,7 +135,7 @@ function Dashboard (props) {
                         {props.videos.videos.length > 0 && props.videos.videos.filter(item=>item.category === 'Movies')
                         .map((item, index)=>(
                             <div key={index}>
-                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId)}>
+                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId, item.title, item.description)}>
                                     <div>
                                         <Image 
                                             cloudName="domzykbc2"
@@ -150,7 +150,7 @@ function Dashboard (props) {
                             </div>
                         ))}
                         </Carousel>
-                        <h3 style={{color:'white'}}>Sports</h3>
+                        <h3 style={{color:'#FBEFF7'}}>Sports</h3>
                         <Carousel
                             responsive={responsive}
                             swipeable={true}
@@ -161,7 +161,7 @@ function Dashboard (props) {
                         {props.videos.videos.length > 0 && props.videos.videos.filter(item=>item.category === 'Sports')
                         .map((item, index)=>(
                             <div key={index}>
-                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId)}>
+                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId, item.title, item.description)}>
                                     <div>
                                         <Image 
                                             cloudName="domzykbc2"
@@ -176,7 +176,7 @@ function Dashboard (props) {
                             </div>
                         ))}
                         </Carousel>
-                        <h3 style={{color:'white'}}>Music</h3>
+                        <h3 style={{color:'#FBEFF7'}}>Music</h3>
                         <Carousel
                             responsive={responsive}
                             swipeable={true}
@@ -187,7 +187,7 @@ function Dashboard (props) {
                         {props.videos.videos.length > 0 && props.videos.videos.filter(item=>item.category === 'Music')
                         .map((item, index)=>(
                             <div key={index}>
-                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId)}>
+                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId, item.title, item.description)}>
                                     <div>
                                         <Image 
                                             cloudName="domzykbc2"
@@ -202,7 +202,7 @@ function Dashboard (props) {
                             </div>
                         ))}
                         </Carousel>
-                        <h3 style={{color:'white'}}>Comedy</h3>
+                        <h3 style={{color:'#FBEFF7'}}>Comedy</h3>
                         <Carousel
                             responsive={responsive}
                             swipeable={true}
@@ -213,7 +213,7 @@ function Dashboard (props) {
                         {props.videos.videos.length > 0 && props.videos.videos.filter(item=>item.category === 'Comedy')
                         .map((item, index)=>(
                             <div key={index}>
-                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId)}>
+                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId, item.title, item.description)}>
                                     <div>
                                         <Image 
                                             cloudName="domzykbc2"
@@ -228,7 +228,7 @@ function Dashboard (props) {
                             </div>
                         ))}
                         </Carousel>
-                        <h3 style={{color:'white'}}>Science & Technology</h3>
+                        <h3 style={{color:'#FBEFF7'}}>Science & Technology</h3>
                         <Carousel
                             responsive={responsive}
                             swipeable={true}
@@ -239,7 +239,7 @@ function Dashboard (props) {
                         {props.videos.videos.length > 0 && props.videos.videos.filter(item=>item.category === 'Science & Technology')
                         .map((item, index)=>(
                             <div key={index}>
-                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId)}>
+                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId, item.title, item.description)}>
                                     <div>
                                         <Image 
                                             cloudName="domzykbc2"
@@ -254,7 +254,7 @@ function Dashboard (props) {
                             </div>
                         ))}
                         </Carousel>
-                        <h3 style={{color:'white'}}>Programming</h3>
+                        <h3 style={{color:'#FBEFF7'}}>Programming</h3>
                         <Carousel
                             responsive={responsive}
                             swipeable={true}
@@ -265,7 +265,7 @@ function Dashboard (props) {
                         {props.videos.videos.length > 0 && props.videos.videos.filter(item=>item.category === 'Programming')
                         .map((item, index)=>(
                             <div key={index}>
-                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId)}>
+                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId, item.title, item.description)}>
                                     <div>
                                         <Image 
                                             cloudName="domzykbc2"
