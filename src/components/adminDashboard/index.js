@@ -72,7 +72,7 @@ const appbarButton={
     display: 'inline-block',
 }
 
-const Categories = ["Action & Adventure","Comedy","Music","Sports","Movies","Science & Technology","Programming"];
+const Categories = ["Action & Adventure","Comedy","Music","Sports","Gaming","Science & Technology","Programming"];
 
 function AdminDashboard (props) {
 
@@ -118,8 +118,6 @@ function AdminDashboard (props) {
         }
     }
     const handleCategory = (e) =>{
-        console.log(e)
-        console.log("category - ", e.target.value)
         setCategory(e.target.value)
     }
 

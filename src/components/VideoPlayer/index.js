@@ -8,6 +8,7 @@ import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Comments from './commentSection/comments'
 
 const root={
     backgroundImage: "linear-gradient(to top right, #291524, black)",
@@ -26,7 +27,8 @@ const player={
 const titleStyle={
     color:'#FBEFF7',
     fontSize: '20px',
-    margin: '20px',
+    margin: '23px',
+    fontWeight: 'bold',
     fontFamily: "sans-serif",
 }
 const descriptionStyle={
@@ -35,6 +37,8 @@ const descriptionStyle={
     margin: '3px',
     marginBottom: '5px',
     border:'none',
+    display:'flex',
+    flexDirection: 'column',
 }
 function VideoPlayer(props) {
     console.log('inside - ',props)
@@ -56,7 +60,7 @@ function VideoPlayer(props) {
                 </Typography>
             </Grid>
             <Divider variant="middle" style={{background:'#9B287B'}} />
-            <Grid item xs={12}>
+            <Grid item xs={10}>
                 <Accordion style={descriptionStyle}> 
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon style={{color:'white', fontSize:'25px'}} />}
@@ -64,22 +68,24 @@ function VideoPlayer(props) {
                         id="additional-actions1-header"
                         aria-controls="panel1a-content"
                     >
-                        <Typography style={{fontSize: '20px',fontFamily: "sans-serif",}}>Description...</Typography>
+                        <Typography style={{fontSize: '17px',fontFamily: "sans-serif",}}>Description...</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                        <Typography style={{fontSize: '15px',fontFamily: "sans-serif",}}>
+                        <Typography style={{fontSize: '13px',fontFamily: "sans-serif",}}>
                             {description}
                         </Typography>
                     </AccordionDetails>
                 </Accordion>
             </Grid>
             <Divider variant="middle" style={{background:'#9B287B'}} />
+            <Comments video_id={props.location.state.object}/>
         </div>
     )
 }
 
 
 const MapStatetoProps = (state) =>({
-    videos: state.videos
+    videos: state.videos,
+    user: state.user
 })
 export default connect(MapStatetoProps,{get_video})(VideoPlayer);

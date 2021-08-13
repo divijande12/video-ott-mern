@@ -54,18 +54,18 @@ const responsive = {
 };
 function Dashboard (props) {
 
-    // const history = useHistory()
     
     useEffect(()=>{
         props.get_video();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
 
-    const handleClick = (videoId,title,description) => {
-        props.history.push("/video/play",{videoId: videoId, title:title, description:description})
+    const handleClick = (videoId,title,description, id) => {
+        props.history.push("/video/play",{videoId: videoId, title:title, description:description, object:id})
     }
 
     console.log('videolist - ',props)
+    console.log(props.user)
 
     return (
         <React.Fragment>
@@ -83,7 +83,7 @@ function Dashboard (props) {
                         >
                         {props.videos.videos.length > 0 && props.videos.videos.map((item, index)=>(
                             <div key={index}>
-                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId, item.title, item.description)}>
+                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId, item.title, item.description, item.id)}>
                                     <div>
                                         <Image 
                                             cloudName="domzykbc2"
@@ -109,7 +109,7 @@ function Dashboard (props) {
                         {props.videos.videos.length > 0 && props.videos.videos.filter(item=>item.category === 'Action & Adventure')
                         .map((item, index)=>(
                             <div key={index}>
-                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId, item.title, item.description)}>
+                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId, item.title, item.description,item.id)}>
                                     <div>
                                         <Image 
                                             cloudName="domzykbc2"
@@ -124,7 +124,7 @@ function Dashboard (props) {
                             </div>
                         ))}
                         </Carousel>
-                        <h3 style={{color:'#FBEFF7'}}>Movies</h3>
+                        <h3 style={{color:'#FBEFF7'}}>Gaming</h3>
                         <Carousel
                             responsive={responsive}
                             swipeable={true}
@@ -132,10 +132,10 @@ function Dashboard (props) {
                             removeArrowOnDeviceType={["tablet", "mobile"]}
                             ssr={true}
                         >
-                        {props.videos.videos.length > 0 && props.videos.videos.filter(item=>item.category === 'Movies')
+                        {props.videos.videos.length > 0 && props.videos.videos.filter(item=>item.category === 'Gaming')
                         .map((item, index)=>(
                             <div key={index}>
-                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId, item.title, item.description)}>
+                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId, item.title, item.description,item.id)}>
                                     <div>
                                         <Image 
                                             cloudName="domzykbc2"
@@ -161,7 +161,7 @@ function Dashboard (props) {
                         {props.videos.videos.length > 0 && props.videos.videos.filter(item=>item.category === 'Sports')
                         .map((item, index)=>(
                             <div key={index}>
-                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId, item.title, item.description)}>
+                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId, item.title, item.description,item.id)}>
                                     <div>
                                         <Image 
                                             cloudName="domzykbc2"
@@ -187,7 +187,7 @@ function Dashboard (props) {
                         {props.videos.videos.length > 0 && props.videos.videos.filter(item=>item.category === 'Music')
                         .map((item, index)=>(
                             <div key={index}>
-                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId, item.title, item.description)}>
+                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId, item.title, item.description,item.id)}>
                                     <div>
                                         <Image 
                                             cloudName="domzykbc2"
@@ -213,7 +213,7 @@ function Dashboard (props) {
                         {props.videos.videos.length > 0 && props.videos.videos.filter(item=>item.category === 'Comedy')
                         .map((item, index)=>(
                             <div key={index}>
-                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId, item.title, item.description)}>
+                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId, item.title, item.description,item.id)}>
                                     <div>
                                         <Image 
                                             cloudName="domzykbc2"
@@ -239,7 +239,7 @@ function Dashboard (props) {
                         {props.videos.videos.length > 0 && props.videos.videos.filter(item=>item.category === 'Science & Technology')
                         .map((item, index)=>(
                             <div key={index}>
-                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId, item.title, item.description)}>
+                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId, item.title, item.description,item.id)}>
                                     <div>
                                         <Image 
                                             cloudName="domzykbc2"
@@ -265,7 +265,7 @@ function Dashboard (props) {
                         {props.videos.videos.length > 0 && props.videos.videos.filter(item=>item.category === 'Programming')
                         .map((item, index)=>(
                             <div key={index}>
-                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId, item.title, item.description)}>
+                                <Paper elevation={10} style={paperstyle} onClick={()=>handleClick(item.videoId, item.title, item.description,item.id)}>
                                     <div>
                                         <Image 
                                             cloudName="domzykbc2"
@@ -289,6 +289,7 @@ function Dashboard (props) {
 }
 
 const MapStatetoProps = (state) =>({
-    videos: state.videos
+    videos: state.videos,
+    user: state.user
 })
 export default connect(MapStatetoProps,{get_video})(Dashboard);

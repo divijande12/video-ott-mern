@@ -9,8 +9,11 @@ export const loginUser = async (username, password, roles) => {
       roles,
     })
     .then((res) => {
+      console.log('login res -',res)
       data = res;
       sessionStorage.setItem('user_data',res)
+      sessionStorage.setItem('user_data',JSON.stringify(res.data))
+      sessionStorage.setItem('username', res.data.username)
     })
     .catch((err) => {
       console.log(err);

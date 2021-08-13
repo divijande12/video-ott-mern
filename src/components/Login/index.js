@@ -170,7 +170,8 @@ const Login=(props) => {
     const submitData = async() =>{
         try {
             const data = await loginUser(username,password)
-            console.log('login success',data)
+            console.log('login success',data.data)
+            setUserData(dispatch, data);
             if(data.status === 200){
                 if(data.data.roles==='user'){
                     console.log(data.data.roles)
@@ -178,11 +179,11 @@ const Login=(props) => {
                 } else if(data.data.roles === 'admin') {
                     history.push('/admin-dashboard')
                 }
-                addToast('Login Successfully',{
+                addToast('Login Successfull!',{
                     appearance: 'success',
                     autoDismiss: true,
                 })
-                setUserData(dispatch, data);
+                // setUserData(dispatch, data);
                 sessionStorage.setItem('user_info',true)
             }
         } catch (e) {

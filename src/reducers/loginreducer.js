@@ -1,7 +1,7 @@
 import { LOGIN_USER } from "../actions/types";
 
 const initialState ={
-    user_info: null
+    user_info: JSON.parse(sessionStorage.getItem('user_data')) || null
 }
 
 const loginReducer = (state = initialState, action) =>{
@@ -10,7 +10,7 @@ const loginReducer = (state = initialState, action) =>{
         case LOGIN_USER:
             return {
                 ...state,
-                user_info:action.payload.data.user_info
+                user_info:action.payload
             }
         default:
             return newState;
