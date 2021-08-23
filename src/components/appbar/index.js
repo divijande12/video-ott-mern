@@ -8,56 +8,58 @@ import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
+import HomeIcon from "@material-ui/icons/Home";
+import VideoCallIcon from "@material-ui/icons/VideoCall";
+import CategoryIcon from "@material-ui/icons/Category";
+import InfoIcon from "@material-ui/icons/Info";
 import MenuOpenIcon from "@material-ui/icons/MenuOpen";
 import { AppBar, IconButton, Toolbar } from "@material-ui/core";
-import logo from '../../assets/images/Untitled.png';
-import { Link } from 'react-router-dom';
+import logo from "../../assets/images/Untitled.png";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   list: {
     width: 250,
-    backgroundColor:'#D2B2CB',
-    height: '100vh',
+    backgroundColor: "#D2B2CB",
+    height: "100vh",
   },
   fullList: {
-    width: "auto"
+    width: "auto",
   },
   appbar: {
     flexGrow: 1,
-    backgroundColor: 'rgba(155, 40, 123, 0.3)',
+    backgroundColor: "rgba(155, 40, 123, 0.3)",
   },
   menuButton: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
   },
   title: {
-    flexGrow: 1
-  }
-}));
-const titleStyle={
-    color: '#9B287B',
-    margin: '5px',
-    marginLeft: '-30px',
-    marginTop: '9px',
-    fontSize: '30px',
-    fontFamily: 'Style Script, cursive',
-    letterSpacing: '3px',
-}
-const container={
-    display: 'flex',
     flexGrow: 1,
-    margin: '5px',
-}
-const logoStyle={
-    display:'flex',
-    marginLeft: '-45px'
-}
+  },
+}));
+const titleStyle = {
+  color: "#9B287B",
+  margin: "5px",
+  marginLeft: "-30px",
+  marginTop: "9px",
+  fontSize: "30px",
+  fontFamily: "Style Script, cursive",
+  letterSpacing: "3px",
+};
+const container = {
+  display: "flex",
+  flexGrow: 1,
+  margin: "5px",
+};
+const logoStyle = {
+  display: "flex",
+  marginLeft: "-45px",
+};
 
 export default function Appbar() {
   const classes = useStyles();
   const [state, setState] = React.useState({
-    left: false
+    left: false,
   });
 
   const toggleDrawer = (anchor, open) => (event) => {
@@ -74,33 +76,25 @@ export default function Appbar() {
   const list = (anchor) => (
     <div
       className={clsx(classes.list, {
-        [classes.fullList]: anchor === "top" || anchor === "bottom"
+        [classes.fullList]: anchor === "top" || anchor === "bottom",
       })}
       role="presentation"
       onClick={toggleDrawer(anchor, false)}
-      onKeyDown={toggleDrawer(anchor, false)}
-    >
+      onKeyDown={toggleDrawer(anchor, false)}>
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
+        {["Home", "Add Video", "Categories", "About"].map((text, index) => (
           <ListItem button key={text}>
             <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              {index === 0 && <HomeIcon />}
+              {index === 1 && <VideoCallIcon />}
+              {index === 2 && <CategoryIcon />}
+              {index === 3 && <InfoIcon />}
             </ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>
         ))}
       </List>
       <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
     </div>
   );
 
@@ -116,20 +110,29 @@ export default function Appbar() {
                   edge="start"
                   className={classes.menuButton}
                   color="inherit"
-                  aria-label="menu"
-                >
-                  <MenuOpenIcon style={{fontSize: 28}} />
+                  aria-label="menu">
+                  <MenuOpenIcon style={{ fontSize: 28 }} />
                 </IconButton>
                 <div style={container}>
-                            <div style={logoStyle}>
-                                <img src={logo} width="115px" height="60px" alt=""/>
-                            </div>
-                            <h2 style={titleStyle}>PoP<span style={{color:'#D2B2CB'}}>FliX</span></h2>
-                        </div>
+                  <div style={logoStyle}>
+                    <img src={logo} width="115px" height="60px" alt="" />
+                  </div>
+                  <h2 style={titleStyle}>
+                    PoP<span style={{ color: "#D2B2CB" }}>FliX</span>
+                  </h2>
+                </div>
                 <Button color="inherit">
-                    <Link to='/logout' style={{color: '#9B287B', textDecoration: 'none', fontFamily: 'sans-serif', fontWeight: 'bold',fontSize:'14px'}}>
-                        Logout
-                    </Link>
+                  <Link
+                    to="/logout"
+                    style={{
+                      color: "#9B287B",
+                      textDecoration: "none",
+                      fontFamily: "sans-serif",
+                      fontWeight: "bold",
+                      fontSize: "14px",
+                    }}>
+                    Logout
+                  </Link>
                 </Button>
               </Toolbar>
             </AppBar>
@@ -138,8 +141,7 @@ export default function Appbar() {
           <Drawer
             anchor={anchor}
             open={state[anchor]}
-            onClose={toggleDrawer(anchor, false)}
-          >
+            onClose={toggleDrawer(anchor, false)}>
             {list(anchor)}
           </Drawer>
         </React.Fragment>
