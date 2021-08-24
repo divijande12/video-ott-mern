@@ -188,7 +188,7 @@ const Login = (props) => {
         appearance: "success",
         autoDismiss: true,
       });
-      history.push("/dashboard");
+      history.replace("/dashboard");
     });
   };
   const handleInputChange = (e) => {
@@ -210,9 +210,9 @@ const Login = (props) => {
       if (data.status === 200) {
         if (data.data.roles === "user") {
           console.log(data.data.roles);
-          history.push("/dashboard");
+          history.replace("/dashboard");
         } else if (data.data.roles === "admin") {
-          history.push("/admin-dashboard");
+          history.replace("/admin-dashboard");
         }
         addToast("Login Successfull!", {
           appearance: "success",
