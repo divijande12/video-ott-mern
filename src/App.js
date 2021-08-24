@@ -7,6 +7,9 @@ import Dashboard from "./components/dashboard";
 import adminDashboard from "./components/adminDashboard";
 import Logout from "./components/Logout";
 import VideoPlayer from "./components/VideoPlayer";
+import { ProtectedRoute } from "./ProtectedRoutes";
+import NotFound from "./components/Not_Found/404route";
+// import UserDashboard from "./containers/UserDashboard";
 
 export default class App extends React.Component {
   render() {
@@ -15,10 +18,15 @@ export default class App extends React.Component {
         <Switch>
           <Route exact path="/" component={Login} />
           <Route exact path="/register" component={Register} />
-          <Route exact path="/dashboard" component={Dashboard} />
-          <Route exact path="/admin-dashboard" component={adminDashboard} />
-          <Route exact path="/video/play" component={VideoPlayer} />
+          <ProtectedRoute exact path="/dashboard" component={Dashboard} />
+          <ProtectedRoute exact path="/video/play" component={VideoPlayer} />
+          <ProtectedRoute
+            exact
+            path="/admin-dashboard"
+            component={adminDashboard}
+          />
           <Route exact path="/logout" component={Logout} />
+          <Route exact path="*" component={NotFound} />
         </Switch>
       </React.Fragment>
     );
