@@ -72,6 +72,11 @@ function Dashboard(props) {
   console.log("videolist - ", props);
   console.log(props.user);
 
+  const videoArray = props.videos.videos;
+  console.log(videoArray);
+  const shuffleVideo = videoArray.sort(() => Math.random() - 0.5);
+  console.log("shuffle", shuffleVideo);
+
   return (
     <React.Fragment>
       {props.videos.video !== null && loading === false ? (

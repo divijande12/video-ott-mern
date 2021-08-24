@@ -1,10 +1,12 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Redirect, Route } from "react-router-dom";
+import { useToasts } from "react-toast-notifications";
 
 export const ProtectedRoute = ({ component: Component, ...rest }) => {
   const user_info = useSelector((state) => state.user.user_info);
-  console.log("divij - ", rest);
+  console.log("protected - ", rest);
+  const { addToast } = useToasts();
   return (
     <Route
       {...rest}
@@ -20,12 +22,18 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => {
             user_info.roles === "user"
           ) {
             return (
-              <Redirect
-                to={{
-                  pathname: "/dashboard",
-                  state: { from: props.location },
-                }}
-              />
+              addToast("Access denied!", {
+                appearance: "error",
+                autoDismiss: true,
+              }),
+              (
+                <Redirect
+                  to={{
+                    pathname: "/dashboard",
+                    state: { from: props.location },
+                  }}
+                />
+              )
             );
           } else {
             return <Component {...props} />;
