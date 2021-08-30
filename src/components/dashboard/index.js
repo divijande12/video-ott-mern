@@ -38,8 +38,13 @@ const responsive = {
     items: 4,
     slidesToSlide: 2, // optional, default to 1.
   },
+  laptop: {
+    breakpoint: { max: 1024, min: 768 },
+    items: 3,
+    slidesToSlide: 1, // optional, default to 1.
+  },
   tablet: {
-    breakpoint: { max: 1024, min: 464 },
+    breakpoint: { max: 768, min: 464 },
     items: 2,
     slidesToSlide: 1, // optional, default to 1.
   },
@@ -79,12 +84,12 @@ function Dashboard(props) {
 
   return (
     <React.Fragment>
-      {props.videos.video !== null && loading === false ? (
-        <div style={root}>
-          <Appbar />
-          <div style={container}>
-            <Container fixed maxWidth="xl">
-              <h3 style={{ color: "#FBEFF7" }}>All Videos</h3>
+      <div style={root}>
+        <Appbar />
+        <div style={container}>
+          <Container fixed maxWidth="xl">
+            <h3 style={{ color: "#FBEFF7" }}>All Videos</h3>
+            {props.videos.videos.length !== null && loading === false ? (
               <Carousel
                 responsive={responsive}
                 swipeable={true}
@@ -126,7 +131,12 @@ function Dashboard(props) {
                     </div>
                   ))}
               </Carousel>
-              <h3 style={{ color: "#FBEFF7" }}>Action & Adventure</h3>
+            ) : (
+              <Loader />
+            )}
+
+            <h3 style={{ color: "#FBEFF7" }}>Action & Adventure</h3>
+            {props.videos.videos.length !== null && loading === false ? (
               <Carousel
                 responsive={responsive}
                 swipeable={true}
@@ -170,7 +180,12 @@ function Dashboard(props) {
                       </div>
                     ))}
               </Carousel>
-              <h3 style={{ color: "#FBEFF7" }}>Gaming</h3>
+            ) : (
+              <Loader />
+            )}
+
+            <h3 style={{ color: "#FBEFF7" }}>Gaming</h3>
+            {props.videos.videos.length !== null && loading === false ? (
               <Carousel
                 responsive={responsive}
                 swipeable={true}
@@ -214,7 +229,11 @@ function Dashboard(props) {
                       </div>
                     ))}
               </Carousel>
-              <h3 style={{ color: "#FBEFF7" }}>Sports</h3>
+            ) : (
+              <Loader />
+            )}
+            <h3 style={{ color: "#FBEFF7" }}>Sports</h3>
+            {props.videos.videos.length !== null && loading === false ? (
               <Carousel
                 responsive={responsive}
                 swipeable={true}
@@ -258,7 +277,12 @@ function Dashboard(props) {
                       </div>
                     ))}
               </Carousel>
-              <h3 style={{ color: "#FBEFF7" }}>Music</h3>
+            ) : (
+              <Loader />
+            )}
+
+            <h3 style={{ color: "#FBEFF7" }}>Music</h3>
+            {props.videos.videos.length !== null && loading === false ? (
               <Carousel
                 responsive={responsive}
                 swipeable={true}
@@ -302,7 +326,12 @@ function Dashboard(props) {
                       </div>
                     ))}
               </Carousel>
-              <h3 style={{ color: "#FBEFF7" }}>Comedy</h3>
+            ) : (
+              <Loader />
+            )}
+
+            <h3 style={{ color: "#FBEFF7" }}>Comedy</h3>
+            {props.videos.videos.length !== null && loading === false ? (
               <Carousel
                 responsive={responsive}
                 swipeable={true}
@@ -346,7 +375,12 @@ function Dashboard(props) {
                       </div>
                     ))}
               </Carousel>
-              <h3 style={{ color: "#FBEFF7" }}>Science & Technology</h3>
+            ) : (
+              <Loader />
+            )}
+
+            <h3 style={{ color: "#FBEFF7" }}>Science & Technology</h3>
+            {props.videos.videos.length !== null && loading === false ? (
               <Carousel
                 responsive={responsive}
                 swipeable={true}
@@ -390,7 +424,12 @@ function Dashboard(props) {
                       </div>
                     ))}
               </Carousel>
-              <h3 style={{ color: "#FBEFF7" }}>Programming</h3>
+            ) : (
+              <Loader />
+            )}
+
+            <h3 style={{ color: "#FBEFF7" }}>Programming</h3>
+            {props.videos.videos.length !== null && loading === false ? (
               <Carousel
                 responsive={responsive}
                 swipeable={true}
@@ -434,12 +473,12 @@ function Dashboard(props) {
                       </div>
                     ))}
               </Carousel>
-            </Container>
-          </div>
+            ) : (
+              <Loader />
+            )}
+          </Container>
         </div>
-      ) : (
-        <Loader />
-      )}
+      </div>
     </React.Fragment>
   );
 }
