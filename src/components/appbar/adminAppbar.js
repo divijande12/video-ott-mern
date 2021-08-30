@@ -13,8 +13,7 @@ import VideoCallIcon from "@material-ui/icons/VideoCall";
 import CategoryIcon from "@material-ui/icons/Category";
 import InfoIcon from "@material-ui/icons/Info";
 // import MenuOpenIcon from "@material-ui/icons/MenuOpen";
-import { AppBar, Grid, Toolbar } from "@material-ui/core";
-
+import { AppBar, Toolbar } from "@material-ui/core";
 import logo from "../../assets/images/Untitled.png";
 import { Link } from "react-router-dom";
 
@@ -57,7 +56,7 @@ const logoStyle = {
   marginLeft: "-45px",
 };
 
-export default function Appbar() {
+export default function AdminAppbar() {
   const classes = useStyles();
   const [state, setState] = React.useState({
     left: false,
@@ -122,21 +121,33 @@ export default function Appbar() {
                     PoP<span style={{ color: "#D2B2CB" }}>FliX</span>
                   </h2>
                 </div>
-                <Grid item>
-                  <Button color="inherit">
-                    <Link
-                      to="/logout"
-                      style={{
-                        color: "#9B287B",
-                        textDecoration: "none",
-                        fontFamily: "sans-serif",
-                        fontWeight: "bold",
-                        fontSize: "14px",
-                      }}>
-                      Logout
-                    </Link>
-                  </Button>
-                </Grid>
+
+                <Button color="inherit">
+                  <Link
+                    to="/addVideo"
+                    style={{
+                      color: "#9B287B",
+                      textDecoration: "none",
+                      fontFamily: "sans-serif",
+                      fontWeight: "bold",
+                      fontSize: "14px",
+                    }}>
+                    Add Video
+                  </Link>
+                </Button>
+                <Button color="inherit">
+                  <Link
+                    to="/logout"
+                    style={{
+                      color: "#9B287B",
+                      textDecoration: "none",
+                      fontFamily: "sans-serif",
+                      fontWeight: "bold",
+                      fontSize: "14px",
+                    }}>
+                    Logout
+                  </Link>
+                </Button>
               </Toolbar>
             </AppBar>
           </div>

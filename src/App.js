@@ -4,12 +4,12 @@ import { Switch, Route } from "react-router-dom";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Dashboard from "./components/dashboard";
-import adminDashboard from "./components/adminDashboard";
+import AdminDashboard from "./components/adminDashboard";
 import Logout from "./components/Logout";
 import VideoPlayer from "./components/VideoPlayer";
 import { ProtectedRoute } from "./ProtectedRoutes";
 import NotFound from "./components/Not_Found/404route";
-// import UserDashboard from "./containers/UserDashboard";
+import AddVideo from "./components/adminDashboard/addvideo";
 
 export default class App extends React.Component {
   render() {
@@ -23,8 +23,9 @@ export default class App extends React.Component {
           <ProtectedRoute
             exact
             path="/admin-dashboard"
-            component={adminDashboard}
+            component={AdminDashboard}
           />
+          <Route exact path="/addVideo" component={AddVideo} />
           <Route exact path="/logout" component={Logout} />
           <Route exact path="*" component={NotFound} />
         </Switch>

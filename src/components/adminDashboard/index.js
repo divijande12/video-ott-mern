@@ -1,323 +1,697 @@
-import { AppBar, Button, Toolbar } from "@material-ui/core";
-import {
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Paper,
-  Select,
-  TextField,
-} from "@material-ui/core";
-import React, { useState } from "react";
-import PublishRoundedIcon from "@material-ui/icons/PublishRounded";
-import { Link } from "react-router-dom";
-import logo from "../../assets/images/Untitled.png";
-import { add_video } from "../../actions/videos.actions";
+import React, { useEffect, useState } from "react";
+import { get_video } from "../../actions/videos.actions";
+import { Image } from "cloudinary-react";
 import { connect } from "react-redux";
-import { useForm } from "react-hook-form";
-import { FormHelperText } from "@material-ui/core";
-import { useToasts } from "react-toast-notifications";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+import { Button, Container, Grid, Paper, TextField } from "@material-ui/core";
+import Loader from "../Skeleton/skeleton";
+import AdminAppbar from "../appbar/adminAppbar";
+import SearchIcon from "@material-ui/icons/Search";
 
 const root = {
   backgroundImage: "linear-gradient(to top right, #291524, black)",
   backgroundSize: "cover",
-  height: "100%",
-  boxSizing: "border-box",
-};
-const paperStyle = {
   height: "auto",
-  width: "85%",
-  padding: "20px",
-  margin: "10px auto",
-  borderRadius: "15px",
-  backgroundColor: "rgba(230, 219, 228,0.9)",
-};
-const grid = {
-  padding: "50px",
-};
-const buttonStyle = {
-  margin: "15px",
-  display: "flex",
-  flexWrap: "wrap",
-  flexGrow: 1,
-};
-const headerStyle = {
-  color: "#5C164E",
-  fontSize: "30px",
-  fontStyle: "normal",
-  fontWeight: "900",
-  fontFamily: "sans-serif",
-};
-const appbarRoot = {
-  display: "flex",
-  flexGrow: 1,
-};
-const appbar = {
-  background: "rgba(155, 40, 123, 0.3)",
-  zIndex: 0,
-};
-const titleStyle = {
-  color: "#9B287B",
-  margin: "5px",
-  marginLeft: "-30px",
-  marginTop: "9px",
-  fontSize: "33px",
-  letterSpacing: "3px",
-  fontFamily: "Style Script, cursive",
+  boxSizing: "border-box",
+  display: "block",
 };
 const container = {
   display: "flex",
-  flexGrow: 1,
+  flexWrap: "wrap",
+};
+const paperstyle = {
   margin: "5px",
+  height: 250,
+  backgroundColor: "rgba(230, 219, 228,0.1)",
+  width: 285,
+  alignItems: "center",
+  textOverflow: "ellipsis",
+  overflow: "hidden",
+  cursor: "pointer",
+  color: "#FBEFF7",
+  fontFamily: "sans-serif",
 };
-const logoStyle = {
-  display: "flex",
-  marginLeft: "-25px",
-};
-const appbarButton = {
-  display: "inline-block",
+const buttonStyle = {
+  marginRight: "15px",
 };
 
-const Categories = [
-  "Action & Adventure",
-  "Comedy",
-  "Music",
-  "Sports",
-  "Gaming",
-  "Science & Technology",
-  "Programming",
-];
-
+const responsive = {
+  desktop: {
+    breakpoint: { max: 3000, min: 1024 },
+    items: 4,
+    slidesToSlide: 2, // optional, default to 1.
+  },
+  laptop: {
+    breakpoint: { max: 1024, min: 768 },
+    items: 3,
+    slidesToSlide: 2, // optional, default to 1.
+  },
+  tablet: {
+    breakpoint: { max: 768, min: 464 },
+    items: 1.7,
+    slidesToSlide: 1, // optional, default to 1.
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 330 },
+    items: 1.1,
+    slidesToSlide: 1, // optional, default to 1.
+  },
+  mobileSmall: {
+    breakpoint: { max: 320, min: 0 },
+    items: 1,
+    slidesToSlide: 1, // optional, default to 1.
+  },
+};
 function AdminDashboard(props) {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
-  const [videoId, setVideoId] = useState("");
-  const [thumbnail, setThumbnail] = useState("");
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    props.get_video();
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm();
-  const { addToast } = useToasts();
-
-  const handleInputChange = (e) => {
-    e.preventDefault();
-    const { name, value } = e.target;
-
-    if (name === "title") {
-      setTitle(value);
-    }
-    if (name === "description") {
-      setDescription(value);
-    }
-    if (name === "videoId") {
-      setVideoId(value);
-    }
-    if (name === "thumbnail") {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        setThumbnail(reader.result);
-      };
-    }
-  };
-  const handleCategory = (e) => {
-    setCategory(e.target.value);
-  };
-
-  const submitData = (e) => {
-    props.add_video({
-      title,
-      description,
-      category,
-      thumbnail,
-      videoId,
-    });
-    setTitle("");
-    setDescription("");
-    setCategory("");
-    setVideoId("");
-    setThumbnail("");
-    addToast("Video Uploaded Successfully", {
-      appearance: "success",
-      autoDismiss: true,
+  const handleClick = (videoId, title, description, id) => {
+    props.history.push("/video/play", {
+      videoId: videoId,
+      title: title,
+      description: description,
+      object: id,
     });
   };
+
+  console.log("videolist - ", props);
+  console.log(props.user);
 
   return (
-    <div style={root}>
-      <div style={appbarRoot}>
-        <AppBar style={appbar} position="static">
-          <Toolbar>
-            <div style={container}>
-              <div style={logoStyle}>
-                <img src={logo} width="115px" height="60px" alt="" />
-              </div>
-              <h2 style={titleStyle}>
-                PoP<span style={{ color: "#D2B2CB" }}>FliX</span>
-              </h2>
-            </div>
-            <div style={appbarButton}>
-              <Button color="inherit">
-                <Link
-                  to="/dashboard"
-                  style={{
-                    color: "#9B287B",
-                    textDecoration: "none",
-                    fontFamily: "sans-serif",
-                    fontWeight: "bold",
-                    fontSize: "14px",
-                  }}>
-                  Dashboard
-                </Link>
-              </Button>
-              <Button color="inherit">
-                <Link
-                  to="/logout"
-                  style={{
-                    color: "#9B287B",
-                    textDecoration: "none",
-                    fontFamily: "sans-serif",
-                    fontWeight: "bold",
-                    fontSize: "14px",
-                  }}>
-                  Logout
-                </Link>
-              </Button>
-            </div>
-          </Toolbar>
-        </AppBar>
-      </div>
-      <Grid style={grid}>
-        <Paper style={paperStyle} elevation={10}>
-          <Grid>
-            <Grid align="center">
-              <h2 style={headerStyle}>Upload Video</h2>
+    <React.Fragment>
+      <div style={root}>
+        <AdminAppbar />
+        <div
+          style={{
+            display: "flex",
+            margin: "5px 15px 10px 50px",
+            color: "white",
+            justifyContent: "center",
+            alignItems: "center",
+          }}>
+          <Grid container spacing={1} alignItems="flex-end">
+            <Grid item>
+              <SearchIcon />
             </Grid>
-            <form onSubmit={handleSubmit(submitData)}>
-              <div style={{ margin: "15px" }}>
-                <TextField
-                  onChangeCapture={handleInputChange}
-                  name="title"
-                  id="outlined-basic"
-                  label="Title"
-                  value={title}
-                  placeholder="Enter Title"
-                  variant="outlined"
-                  {...register("title", { required: "Title is required" })}
-                  error={Boolean(errors.title)}
-                  helperText={errors.title?.message}
-                  fullWidth
-                />
-              </div>
-              <div style={{ margin: "15px" }}>
-                <TextField
-                  onChangeCapture={handleInputChange}
-                  name="description"
-                  id="outlined-multiline-static"
-                  value={description}
-                  label="Description"
-                  placeholder="Enter description"
-                  multiline
-                  rows={5}
-                  variant="outlined"
-                  {...register("description", {
-                    required: "Description is required",
-                  })}
-                  error={Boolean(errors.description)}
-                  helperText={errors.description?.message}
-                  fullWidth
-                />
-              </div>
-              <div style={{ margin: "15px" }}>
-                <FormControl
-                  variant="outlined"
-                  fullWidth
-                  error={Boolean(errors.category)}>
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    Category
-                  </InputLabel>
-                  <Select
-                    name="category"
-                    onChange={handleCategory}
-                    value={category}
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
-                    label="Category"
-                    displayEmpty
-                    control={control}
-                    // rules={{...register("category",{required:"Category is required"})}}
-                  >
-                    {Categories.map((item, index) => (
-                      <MenuItem key={index} value={item}>
-                        {item}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <FormHelperText
-                  style={{ color: "#f44336", marginLeft: "12px" }}>
-                  {errors.category?.message}
-                </FormHelperText>
-              </div>
-              <div style={{ margin: "15px" }}>
-                <TextField
-                  onChangeCapture={handleInputChange}
-                  name="thumbnail"
-                  id="outlined-basic"
-                  label="Upload Thumbnail"
-                  type="file"
-                  placeholder="Placeholder"
-                  fullWidth
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  {...register("thumbnail", {
-                    required: "Thumbnail is required",
-                  })}
-                  error={Boolean(errors.thumbnail)}
-                  helperText={errors.thumbnail?.message}
-                  variant="outlined"
-                />
-              </div>
-
-              <div style={{ margin: "15px" }}>
-                <TextField
-                  onChangeCapture={handleInputChange}
-                  name="videoId"
-                  id="outlined-basic"
-                  value={videoId}
-                  label="VideoId"
-                  placeholder="Enter VideoId"
-                  variant="outlined"
-                  fullWidth
-                  {...register("videoId", { required: "VideoId is required" })}
-                  error={Boolean(errors.videoId)}
-                  helperText={errors.videoId?.message}
-                />
-              </div>
-              <div style={buttonStyle}>
-                <Button
-                  style={{ backgroundColor: "#5C164E", color: "#E7EBC5" }}
-                  variant="contained"
-                  type="submit"
-                  fullWidth
-                  startIcon={<PublishRoundedIcon />}>
-                  Upload
-                </Button>
-              </div>
-            </form>
+            <Grid item>
+              <TextField
+                id="standard-name"
+                color="secondary"
+                label="Search"
+                InputLabelProps={{
+                  style: {
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    width: "100%",
+                    color: "#9B287B",
+                  },
+                }}
+                InputProps={{
+                  style: {
+                    color: "white",
+                  },
+                }}
+              />
+            </Grid>
           </Grid>
-        </Paper>
-      </Grid>
-    </div>
+        </div>
+        <div style={container}>
+          <Container fixed maxWidth="xl">
+            <h3 style={{ color: "#FBEFF7" }}>All Videos</h3>
+            {props.videos.videos.length !== null && loading === false ? (
+              <Carousel
+                responsive={responsive}
+                swipeable={true}
+                draggable={true}
+                removeArrowOnDeviceType={["tablet", "mobile"]}
+                ssr={true}>
+                {props.videos.videos.length > 0 &&
+                  props.videos.videos.map((item, index) => (
+                    <div key={index}>
+                      <Paper
+                        elevation={10}
+                        style={paperstyle}
+                        onClick={() =>
+                          handleClick(
+                            item.videoId,
+                            item.title,
+                            item.description,
+                            item.id
+                          )
+                        }>
+                        <div>
+                          <Image
+                            cloudName="domzykbc2"
+                            public_id={item.thumbnail}
+                            crop="scale"
+                            height={180}
+                            width={285}
+                          />
+                          <h6
+                            style={{
+                              fontSize: "13px",
+                              marginTop: "4px",
+                              textAlign: "center",
+                            }}>
+                            {item.title}
+                          </h6>
+                        </div>
+                      </Paper>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          margin: "3px 0px 5px 5px",
+                          justifyContent: "flex-start",
+                        }}>
+                        <Button
+                          style={buttonStyle}
+                          variant="outlined"
+                          size="small"
+                          color="primary">
+                          Edit
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          size="small"
+                          color="secondary">
+                          Delete
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+              </Carousel>
+            ) : (
+              <Loader />
+            )}
+
+            <h3 style={{ color: "#FBEFF7" }}>Action & Adventure</h3>
+            {props.videos.videos.length !== null && loading === false ? (
+              <Carousel
+                responsive={responsive}
+                swipeable={true}
+                draggable={true}
+                removeArrowOnDeviceType={["tablet", "mobile"]}
+                ssr={true}>
+                {props.videos.videos.length > 0 &&
+                  props.videos.videos
+                    .filter((item) => item.category === "Action & Adventure")
+                    .map((item, index) => (
+                      <div key={index}>
+                        <Paper
+                          elevation={10}
+                          style={paperstyle}
+                          onClick={() =>
+                            handleClick(
+                              item.videoId,
+                              item.title,
+                              item.description,
+                              item.id
+                            )
+                          }>
+                          <div>
+                            <Image
+                              cloudName="domzykbc2"
+                              public_id={item.thumbnail}
+                              crop="scale"
+                              height={180}
+                              width={285}
+                            />
+                            <h6
+                              style={{
+                                fontSize: "13px",
+                                marginTop: "5px",
+                                textAlign: "center",
+                              }}>
+                              {item.title}
+                            </h6>
+                          </div>
+                        </Paper>
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            margin: "3px 0px 5px 5px",
+                            justifyContent: "flex-start",
+                          }}>
+                          <Button
+                            style={buttonStyle}
+                            variant="outlined"
+                            size="small"
+                            color="primary">
+                            Edit
+                          </Button>
+                          <Button
+                            variant="outlined"
+                            size="small"
+                            color="secondary">
+                            Delete
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+              </Carousel>
+            ) : (
+              <Loader />
+            )}
+
+            <h3 style={{ color: "#FBEFF7" }}>Gaming</h3>
+            {props.videos.videos.length !== null && loading === false ? (
+              <Carousel
+                responsive={responsive}
+                swipeable={true}
+                draggable={true}
+                removeArrowOnDeviceType={["tablet", "mobile"]}
+                ssr={true}>
+                {props.videos.videos.length > 0 &&
+                  props.videos.videos
+                    .filter((item) => item.category === "Gaming")
+                    .map((item, index) => (
+                      <div key={index}>
+                        <Paper
+                          elevation={10}
+                          style={paperstyle}
+                          onClick={() =>
+                            handleClick(
+                              item.videoId,
+                              item.title,
+                              item.description,
+                              item.id
+                            )
+                          }>
+                          <div>
+                            <Image
+                              cloudName="domzykbc2"
+                              public_id={item.thumbnail}
+                              crop="scale"
+                              height={180}
+                              width={285}
+                            />
+                            <h6
+                              style={{
+                                fontSize: "13px",
+                                marginTop: "5px",
+                                textAlign: "center",
+                              }}>
+                              {item.title}
+                            </h6>
+                          </div>
+                        </Paper>
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            margin: "3px 0px 5px 5px",
+                            justifyContent: "flex-start",
+                          }}>
+                          <Button
+                            style={buttonStyle}
+                            variant="outlined"
+                            size="small"
+                            color="primary">
+                            Edit
+                          </Button>
+                          <Button
+                            variant="outlined"
+                            size="small"
+                            color="secondary">
+                            Delete
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+              </Carousel>
+            ) : (
+              <Loader />
+            )}
+            <h3 style={{ color: "#FBEFF7" }}>Sports</h3>
+            {props.videos.videos.length !== null && loading === false ? (
+              <Carousel
+                responsive={responsive}
+                swipeable={true}
+                draggable={true}
+                removeArrowOnDeviceType={["tablet", "mobile"]}
+                ssr={true}>
+                {props.videos.videos.length > 0 &&
+                  props.videos.videos
+                    .filter((item) => item.category === "Sports")
+                    .map((item, index) => (
+                      <div key={index}>
+                        <Paper
+                          elevation={10}
+                          style={paperstyle}
+                          onClick={() =>
+                            handleClick(
+                              item.videoId,
+                              item.title,
+                              item.description,
+                              item.id
+                            )
+                          }>
+                          <div>
+                            <Image
+                              cloudName="domzykbc2"
+                              public_id={item.thumbnail}
+                              crop="scale"
+                              height={180}
+                              width={285}
+                            />
+                            <h6
+                              style={{
+                                fontSize: "13px",
+                                marginTop: "5px",
+                                textAlign: "center",
+                              }}>
+                              {item.title}
+                            </h6>
+                          </div>
+                        </Paper>
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            margin: "3px 0px 5px 5px",
+                            justifyContent: "flex-start",
+                          }}>
+                          <Button
+                            style={buttonStyle}
+                            variant="outlined"
+                            size="small"
+                            color="primary">
+                            Edit
+                          </Button>
+                          <Button
+                            variant="outlined"
+                            size="small"
+                            color="secondary">
+                            Delete
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+              </Carousel>
+            ) : (
+              <Loader />
+            )}
+
+            <h3 style={{ color: "#FBEFF7" }}>Music</h3>
+            {props.videos.videos.length !== null && loading === false ? (
+              <Carousel
+                responsive={responsive}
+                swipeable={true}
+                draggable={true}
+                removeArrowOnDeviceType={["tablet", "mobile"]}
+                ssr={true}>
+                {props.videos.videos.length > 0 &&
+                  props.videos.videos
+                    .filter((item) => item.category === "Music")
+                    .map((item, index) => (
+                      <div key={index}>
+                        <Paper
+                          elevation={10}
+                          style={paperstyle}
+                          onClick={() =>
+                            handleClick(
+                              item.videoId,
+                              item.title,
+                              item.description,
+                              item.id
+                            )
+                          }>
+                          <div>
+                            <Image
+                              cloudName="domzykbc2"
+                              public_id={item.thumbnail}
+                              crop="scale"
+                              height={180}
+                              width={285}
+                            />
+                            <h6
+                              style={{
+                                fontSize: "13px",
+                                marginTop: "5px",
+                                textAlign: "center",
+                              }}>
+                              {item.title}
+                            </h6>
+                          </div>
+                        </Paper>
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            margin: "3px 0px 5px 5px",
+                            justifyContent: "flex-start",
+                          }}>
+                          <Button
+                            style={buttonStyle}
+                            variant="outlined"
+                            size="small"
+                            color="primary">
+                            Edit
+                          </Button>
+                          <Button
+                            variant="outlined"
+                            size="small"
+                            color="secondary">
+                            Delete
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+              </Carousel>
+            ) : (
+              <Loader />
+            )}
+
+            <h3 style={{ color: "#FBEFF7" }}>Comedy</h3>
+            {props.videos.videos.length !== null && loading === false ? (
+              <Carousel
+                responsive={responsive}
+                swipeable={true}
+                draggable={true}
+                removeArrowOnDeviceType={["tablet", "mobile"]}
+                ssr={true}>
+                {props.videos.videos.length > 0 &&
+                  props.videos.videos
+                    .filter((item) => item.category === "Comedy")
+                    .map((item, index) => (
+                      <div key={index}>
+                        <Paper
+                          elevation={10}
+                          style={paperstyle}
+                          onClick={() =>
+                            handleClick(
+                              item.videoId,
+                              item.title,
+                              item.description,
+                              item.id
+                            )
+                          }>
+                          <div>
+                            <Image
+                              cloudName="domzykbc2"
+                              public_id={item.thumbnail}
+                              crop="scale"
+                              height={180}
+                              width={285}
+                            />
+                            <h6
+                              style={{
+                                fontSize: "13px",
+                                marginTop: "5px",
+                                textAlign: "center",
+                              }}>
+                              {item.title}
+                            </h6>
+                          </div>
+                        </Paper>
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            margin: "3px 0px 5px 5px",
+                            justifyContent: "flex-start",
+                          }}>
+                          <Button
+                            style={buttonStyle}
+                            variant="outlined"
+                            size="small"
+                            color="primary">
+                            Edit
+                          </Button>
+                          <Button
+                            variant="outlined"
+                            size="small"
+                            color="secondary">
+                            Delete
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+              </Carousel>
+            ) : (
+              <Loader />
+            )}
+
+            <h3 style={{ color: "#FBEFF7" }}>Science & Technology</h3>
+            {props.videos.videos.length !== null && loading === false ? (
+              <Carousel
+                responsive={responsive}
+                swipeable={true}
+                draggable={true}
+                removeArrowOnDeviceType={["tablet", "mobile"]}
+                ssr={true}>
+                {props.videos.videos.length > 0 &&
+                  props.videos.videos
+                    .filter((item) => item.category === "Science & Technology")
+                    .map((item, index) => (
+                      <div key={index}>
+                        <Paper
+                          elevation={10}
+                          style={paperstyle}
+                          onClick={() =>
+                            handleClick(
+                              item.videoId,
+                              item.title,
+                              item.description,
+                              item.id
+                            )
+                          }>
+                          <div>
+                            <Image
+                              cloudName="domzykbc2"
+                              public_id={item.thumbnail}
+                              crop="scale"
+                              height={180}
+                              width={285}
+                            />
+                            <h6
+                              style={{
+                                fontSize: "13px",
+                                marginTop: "5px",
+                                textAlign: "center",
+                              }}>
+                              {item.title}
+                            </h6>
+                          </div>
+                        </Paper>
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            margin: "3px 0px 5px 5px",
+                            justifyContent: "flex-start",
+                          }}>
+                          <Button
+                            style={buttonStyle}
+                            variant="outlined"
+                            size="small"
+                            color="primary">
+                            Edit
+                          </Button>
+                          <Button
+                            variant="outlined"
+                            size="small"
+                            color="secondary">
+                            Delete
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+              </Carousel>
+            ) : (
+              <Loader />
+            )}
+
+            <h3 style={{ color: "#FBEFF7" }}>Programming</h3>
+            {props.videos.videos.length !== null && loading === false ? (
+              <Carousel
+                responsive={responsive}
+                swipeable={true}
+                draggable={true}
+                removeArrowOnDeviceType={["tablet", "mobile"]}
+                ssr={true}>
+                {props.videos.videos.length > 0 &&
+                  props.videos.videos
+                    .filter((item) => item.category === "Programming")
+                    .map((item, index) => (
+                      <div key={index}>
+                        <Paper
+                          elevation={10}
+                          style={paperstyle}
+                          onClick={() =>
+                            handleClick(
+                              item.videoId,
+                              item.title,
+                              item.description,
+                              item.id
+                            )
+                          }>
+                          <div>
+                            <Image
+                              cloudName="domzykbc2"
+                              public_id={item.thumbnail}
+                              crop="scale"
+                              height={180}
+                              width={285}
+                            />
+                            <h6
+                              style={{
+                                fontSize: "13px",
+                                marginTop: "5px",
+                                textAlign: "center",
+                              }}>
+                              {item.title}
+                            </h6>
+                          </div>
+                        </Paper>
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            margin: "3px 0px 5px 5px",
+                            justifyContent: "flex-start",
+                          }}>
+                          <Button
+                            style={buttonStyle}
+                            variant="outlined"
+                            size="small"
+                            color="primary">
+                            Edit
+                          </Button>
+                          <Button
+                            variant="outlined"
+                            size="small"
+                            color="secondary">
+                            Delete
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+              </Carousel>
+            ) : (
+              <Loader />
+            )}
+          </Container>
+        </div>
+      </div>
+    </React.Fragment>
   );
 }
+
 const MapStatetoProps = (state) => ({
   videos: state.videos,
+  user: state.user,
 });
-export default connect(MapStatetoProps, { add_video })(AdminDashboard);
+export default connect(MapStatetoProps, { get_video })(AdminDashboard);

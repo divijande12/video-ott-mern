@@ -5,8 +5,9 @@ import { Image } from "cloudinary-react";
 import { connect } from "react-redux";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { Container, Paper } from "@material-ui/core";
+import { Container, Grid, Paper, TextField } from "@material-ui/core";
 import Loader from "../Skeleton/skeleton";
+import SearchIcon from "@material-ui/icons/Search";
 
 const root = {
   backgroundImage: "linear-gradient(to top right, #291524, black)",
@@ -41,15 +42,20 @@ const responsive = {
   laptop: {
     breakpoint: { max: 1024, min: 768 },
     items: 3,
-    slidesToSlide: 1, // optional, default to 1.
+    slidesToSlide: 2, // optional, default to 1.
   },
   tablet: {
     breakpoint: { max: 768, min: 464 },
-    items: 2,
+    items: 1.7,
     slidesToSlide: 1, // optional, default to 1.
   },
   mobile: {
-    breakpoint: { max: 464, min: 0 },
+    breakpoint: { max: 464, min: 330 },
+    items: 1.1,
+    slidesToSlide: 1, // optional, default to 1.
+  },
+  mobileSmall: {
+    breakpoint: { max: 320, min: 0 },
     items: 1,
     slidesToSlide: 1, // optional, default to 1.
   },
@@ -61,7 +67,7 @@ function Dashboard(props) {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 1000);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -86,6 +92,41 @@ function Dashboard(props) {
     <React.Fragment>
       <div style={root}>
         <Appbar />
+        <div
+          style={{
+            display: "flex",
+            margin: "5px 15px 10px 50px",
+            color: "white",
+            justifyContent: "center",
+            alignItems: "center",
+          }}>
+          <Grid container spacing={1} alignItems="flex-end">
+            <Grid item>
+              <SearchIcon />
+            </Grid>
+            <Grid item>
+              <TextField
+                id="standard-name"
+                color="secondary"
+                label="Search"
+                InputLabelProps={{
+                  style: {
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    width: "100%",
+                    color: "#9B287B",
+                  },
+                }}
+                InputProps={{
+                  style: {
+                    color: "white",
+                  },
+                }}
+              />
+            </Grid>
+          </Grid>
+        </div>
         <div style={container}>
           <Container fixed maxWidth="xl">
             <h3 style={{ color: "#FBEFF7" }}>All Videos</h3>
