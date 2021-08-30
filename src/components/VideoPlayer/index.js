@@ -10,7 +10,7 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Comments from "./commentSection/comments";
 import LikeDislikes from "./LikeDislikeSection/likeDislikes";
-import Loader from "../Skeleton/skeleton";
+import { Skeleton } from "@material-ui/lab";
 
 const root = {
   backgroundImage: "linear-gradient(to top right, #291524, black)",
@@ -60,7 +60,7 @@ function VideoPlayer(props) {
       <Appbar />
       {loading === false ? (
         <Grid item xs={12} style={container}>
-          <Paper style={{ backgroundColor: "rgba(230, 219, 228,0)" }}>
+          <Paper style={{ backgroundColor: "rgba(230, 219, 228,0.1)" }}>
             <ReactPlayer
               style={player}
               width="100%"
@@ -72,7 +72,15 @@ function VideoPlayer(props) {
           </Paper>
         </Grid>
       ) : (
-        <Loader />
+        <Skeleton
+          variant="rect"
+          style={{
+            backgroundColor: "rgba(230, 219, 228,0.1)",
+            width: "97%",
+            height: "70vh",
+            margin: "20px 0px 0px 20px",
+          }}
+        />
       )}
 
       <Grid item xs={12} sm={12}>
