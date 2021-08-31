@@ -65,6 +65,7 @@ const responsive = {
 };
 function AdminDashboard(props) {
   const [loading, setLoading] = useState(false);
+  const [videoData, setVideoData] = useState([]);
   useEffect(() => {
     props.get_video();
     setLoading(true);
@@ -85,6 +86,25 @@ function AdminDashboard(props) {
 
   console.log("videolist - ", props);
   console.log(props.user);
+
+  const searchFunction = (e) => {
+    e.preventDefault();
+    // 1. search text
+    const searchText = e.target.value;
+    // 2. find in main array
+    setVideoData([
+      ...props.videos.videos.filter((item) => {
+        console.log("divij - inside - ", item.title);
+        if (item.title.toLowerCase().includes(searchText.toLowerCase())) {
+          return true;
+        }
+        return false;
+      }),
+    ]);
+    console.log("divij - videoData = ", videoData);
+    // 3. setState that searched content
+    // 4. display content
+  };
 
   return (
     <React.Fragment>
@@ -107,6 +127,7 @@ function AdminDashboard(props) {
                 id="standard-name"
                 color="secondary"
                 label="Search"
+                onChangeCapture={searchFunction}
                 fullWidth
                 InputLabelProps={{
                   style: {
@@ -135,61 +156,118 @@ function AdminDashboard(props) {
                 draggable={true}
                 removeArrowOnDeviceType={["tablet", "mobile"]}
                 ssr={true}>
-                {props.videos.videos.length > 0 &&
-                  props.videos.videos.map((item, index) => (
-                    <div key={index}>
-                      <Paper
-                        elevation={10}
-                        style={paperstyle}
-                        onClick={() =>
-                          handleClick(
-                            item.videoId,
-                            item.title,
-                            item.description,
-                            item.id
-                          )
-                        }>
-                        <div>
-                          <Image
-                            cloudName="domzykbc2"
-                            public_id={item.thumbnail}
-                            crop="scale"
-                            height={180}
-                            width={285}
-                          />
-                          <h6
-                            style={{
-                              fontSize: "13px",
-                              marginTop: "4px",
-                              textAlign: "center",
-                            }}>
-                            {item.title}
-                          </h6>
+                {videoData.length > 0
+                  ? videoData.map((item, index) => (
+                      <div key={index}>
+                        <Paper
+                          elevation={10}
+                          style={paperstyle}
+                          onClick={() =>
+                            handleClick(
+                              item.videoId,
+                              item.title,
+                              item.description,
+                              item.id
+                            )
+                          }>
+                          <div>
+                            <Image
+                              cloudName="domzykbc2"
+                              public_id={item.thumbnail}
+                              crop="scale"
+                              height={180}
+                              width={285}
+                            />
+                            <h6
+                              style={{
+                                fontSize: "13px",
+                                marginTop: "4px",
+                                textAlign: "center",
+                                textOverflow: "ellipsis",
+                              }}>
+                              {item.title}
+                            </h6>
+                          </div>
+                        </Paper>
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            margin: "3px 0px 5px 5px",
+                            justifyContent: "flex-start",
+                          }}>
+                          <Button
+                            style={buttonStyle}
+                            variant="outlined"
+                            size="small"
+                            color="primary">
+                            Edit
+                          </Button>
+                          <Button
+                            variant="outlined"
+                            size="small"
+                            color="secondary">
+                            Delete
+                          </Button>
                         </div>
-                      </Paper>
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          margin: "3px 0px 5px 5px",
-                          justifyContent: "flex-start",
-                        }}>
-                        <Button
-                          style={buttonStyle}
-                          variant="outlined"
-                          size="small"
-                          color="primary">
-                          Edit
-                        </Button>
-                        <Button
-                          variant="outlined"
-                          size="small"
-                          color="secondary">
-                          Delete
-                        </Button>
                       </div>
-                    </div>
-                  ))}
+                    ))
+                  : props.videos.videos.length > 0 &&
+                    props.videos.videos.map((item, index) => (
+                      <div key={index}>
+                        <Paper
+                          elevation={10}
+                          style={paperstyle}
+                          onClick={() =>
+                            handleClick(
+                              item.videoId,
+                              item.title,
+                              item.description,
+                              item.id
+                            )
+                          }>
+                          <div>
+                            <Image
+                              cloudName="domzykbc2"
+                              public_id={item.thumbnail}
+                              crop="scale"
+                              height={180}
+                              width={285}
+                            />
+                            <h6
+                              style={{
+                                fontSize: "13px",
+                                marginTop: "4px",
+                                textAlign: "center",
+                                textOverflow: "ellipsis",
+                              }}>
+                              {item.title}
+                            </h6>
+                          </div>
+                        </Paper>
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            margin: "3px 0px 5px 5px",
+                            justifyContent: "flex-start",
+                          }}>
+                          <Button
+                            style={buttonStyle}
+                            variant="outlined"
+                            size="small"
+                            color="primary">
+                            Edit
+                          </Button>
+                          <Button
+                            variant="outlined"
+                            size="small"
+                            color="secondary">
+                            Delete
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
               </Carousel>
             ) : (
               <Loader />

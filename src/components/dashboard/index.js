@@ -8,6 +8,7 @@ import "react-multi-carousel/lib/styles.css";
 import { Container, Grid, Paper, TextField } from "@material-ui/core";
 import Loader from "../Skeleton/skeleton";
 import SearchIcon from "@material-ui/icons/Search";
+// import swal from "sweetalert";
 
 const root = {
   backgroundImage: "linear-gradient(to top right, #291524, black)",
@@ -19,6 +20,7 @@ const root = {
 const container = {
   display: "flex",
   flexWrap: "wrap",
+  flexDirection: "row",
 };
 const paperstyle = {
   margin: "5px",
@@ -93,18 +95,17 @@ function Dashboard(props) {
     e.preventDefault();
     // 1. search text
     const searchText = e.target.value;
-    console.log("karan - search text = ", searchText);
     // 2. find in main array
     setVideoData([
       ...props.videos.videos.filter((item) => {
-        console.log("karan - inside - ", item.title);
+        console.log("divij - inside - ", item.title);
         if (item.title.toLowerCase().includes(searchText.toLowerCase())) {
           return true;
         }
         return false;
       }),
     ]);
-    console.log("karan - videoData = ", videoData);
+    console.log("divij - videoData = ", videoData);
     // 3. setState that searched content
     // 4. display content
   };
