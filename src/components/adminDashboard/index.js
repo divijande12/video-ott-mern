@@ -102,17 +102,17 @@ function AdminDashboard(props) {
             <Grid item>
               <SearchIcon />
             </Grid>
-            <Grid item>
+            <Grid item xs={10} sm={6}>
               <TextField
                 id="standard-name"
                 color="secondary"
                 label="Search"
+                fullWidth
                 InputLabelProps={{
                   style: {
                     textOverflow: "ellipsis",
                     whiteSpace: "nowrap",
                     overflow: "hidden",
-                    width: "100%",
                     color: "#9B287B",
                   },
                 }}

@@ -25,7 +25,7 @@ export default class App extends React.Component {
             path="/admin-dashboard"
             component={AdminDashboard}
           />
-          <Route exact path="/addVideo" component={AddVideo} />
+          <ProtectedRoute exact path="/addVideo" component={AddVideo} />
           <Route exact path="/logout" component={Logout} />
           <Route exact path="*" component={NotFound} />
         </Switch>

@@ -55,6 +55,24 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => {
                 />
               )
             );
+          } else if (
+            rest.location.pathname === "/addVideo" &&
+            user_info.roles === "user"
+          ) {
+            return (
+              addToast("Access denied!", {
+                appearance: "error",
+                autoDismiss: true,
+              }),
+              (
+                <Redirect
+                  to={{
+                    pathname: "/dashboard",
+                    state: { from: props.location },
+                  }}
+                />
+              )
+            );
           } else {
             return <Component {...props} />;
           }

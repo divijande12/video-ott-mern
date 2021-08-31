@@ -62,6 +62,7 @@ const responsive = {
 };
 function Dashboard(props) {
   const [loading, setLoading] = useState(false);
+  const [videoData, setVideoData] = useState([]);
   useEffect(() => {
     props.get_video();
     setLoading(true);
@@ -88,6 +89,26 @@ function Dashboard(props) {
   const shuffleVideo = videoArray.sort(() => Math.random() - 0.5);
   console.log("shuffle", shuffleVideo);
 
+  const searchFunction = (e) => {
+    e.preventDefault();
+    // 1. search text
+    const searchText = e.target.value;
+    console.log("karan - search text = ", searchText);
+    // 2. find in main array
+    setVideoData([
+      ...props.videos.videos.filter((item) => {
+        console.log("karan - inside - ", item.title);
+        if (item.title.toLowerCase().includes(searchText.toLowerCase())) {
+          return true;
+        }
+        return false;
+      }),
+    ]);
+    console.log("karan - videoData = ", videoData);
+    // 3. setState that searched content
+    // 4. display content
+  };
+
   return (
     <React.Fragment>
       <div style={root}>
@@ -104,17 +125,18 @@ function Dashboard(props) {
             <Grid item>
               <SearchIcon />
             </Grid>
-            <Grid item>
+            <Grid item xs={10} sm={6}>
               <TextField
                 id="standard-name"
                 color="secondary"
                 label="Search"
+                onChangeCapture={searchFunction}
+                fullWidth
                 InputLabelProps={{
                   style: {
                     textOverflow: "ellipsis",
                     whiteSpace: "nowrap",
                     overflow: "hidden",
-                    width: "100%",
                     color: "#9B287B",
                   },
                 }}
@@ -135,42 +157,78 @@ function Dashboard(props) {
                 responsive={responsive}
                 swipeable={true}
                 draggable={true}
-                removeArrowOnDeviceType={["tablet", "mobile"]}
+                removeArrowOnDeviceType={["tablet", "mobile", "mobileSmall"]}
                 ssr={true}>
-                {props.videos.videos.length > 0 &&
-                  props.videos.videos.map((item, index) => (
-                    <div key={index}>
-                      <Paper
-                        elevation={10}
-                        style={paperstyle}
-                        onClick={() =>
-                          handleClick(
-                            item.videoId,
-                            item.title,
-                            item.description,
-                            item.id
-                          )
-                        }>
-                        <div>
-                          <Image
-                            cloudName="domzykbc2"
-                            public_id={item.thumbnail}
-                            crop="scale"
-                            height={180}
-                            width={285}
-                          />
-                          <h6
-                            style={{
-                              fontSize: "13px",
-                              marginTop: "4px",
-                              textAlign: "center",
-                            }}>
-                            {item.title}
-                          </h6>
-                        </div>
-                      </Paper>
-                    </div>
-                  ))}
+                {videoData.length > 0
+                  ? videoData.map((item, index) => (
+                      <div key={index}>
+                        <Paper
+                          elevation={10}
+                          style={paperstyle}
+                          onClick={() =>
+                            handleClick(
+                              item.videoId,
+                              item.title,
+                              item.description,
+                              item.id
+                            )
+                          }>
+                          <div>
+                            <Image
+                              cloudName="domzykbc2"
+                              public_id={item.thumbnail}
+                              crop="scale"
+                              height={180}
+                              width={285}
+                            />
+                            <h6
+                              style={{
+                                fontSize: "13px",
+                                marginTop: "4px",
+                                textAlign: "center",
+                                textOverflow: "ellipsis",
+                              }}>
+                              {item.title}
+                            </h6>
+                          </div>
+                        </Paper>
+                      </div>
+                    ))
+                  : props.videos.videos.length > 0 &&
+                    props.videos.videos.map((item, index) => (
+                      <div key={index}>
+                        <Paper
+                          elevation={10}
+                          style={paperstyle}
+                          onClick={() =>
+                            handleClick(
+                              item.videoId,
+                              item.title,
+                              item.description,
+                              item.id
+                            )
+                          }>
+                          <div>
+                            <Image
+                              cloudName="domzykbc2"
+                              public_id={item.thumbnail}
+                              crop="scale"
+                              height={180}
+                              width={285}
+                            />
+                            <h6
+                              style={{
+                                fontSize: "13px",
+                                marginTop: "4px",
+                                textAlign: "center",
+                                textOverflow: "ellipsis",
+                              }}>
+                              {item.title}
+                            </h6>
+                          </div>
+                        </Paper>
+                      </div>
+                    ))}
               </Carousel>
             ) : (
               <Loader />

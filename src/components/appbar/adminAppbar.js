@@ -132,7 +132,7 @@ export default function AdminAppbar() {
                       fontWeight: "bold",
                       fontSize: "14px",
                     }}>
-                    Add Video
+                    Upload
                   </Link>
                 </Button>
                 <Button color="inherit">
