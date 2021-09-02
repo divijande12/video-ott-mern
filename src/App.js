@@ -10,6 +10,7 @@ import VideoPlayer from "./components/VideoPlayer";
 import { ProtectedRoute } from "./ProtectedRoutes";
 import NotFound from "./components/Not_Found/404route";
 import AddVideo from "./components/adminDashboard/addvideo";
+import EditVideo from "./components/EditVideo";
 
 export default class App extends React.Component {
   render() {
@@ -26,6 +27,7 @@ export default class App extends React.Component {
             component={AdminDashboard}
           />
           <ProtectedRoute exact path="/addVideo" component={AddVideo} />
+          <ProtectedRoute exact path="/edit/:id" component={EditVideo} />
           <Route exact path="/logout" component={Logout} />
           <Route exact path="*" component={NotFound} />
         </Switch>

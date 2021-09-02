@@ -5,6 +5,7 @@ import { useToasts } from "react-toast-notifications";
 
 export const ProtectedRoute = ({ component: Component, ...rest }) => {
   const user_info = useSelector((state) => state.user.user_info);
+  // const videoId = useSelector((state) => state.videos.videos.id);
   console.log("protected - ", rest);
   const { addToast } = useToasts();
   return (
@@ -57,6 +58,24 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => {
             );
           } else if (
             rest.location.pathname === "/addVideo" &&
+            user_info.roles === "user"
+          ) {
+            return (
+              addToast("Access denied!", {
+                appearance: "error",
+                autoDismiss: true,
+              }),
+              (
+                <Redirect
+                  to={{
+                    pathname: "/dashboard",
+                    state: { from: props.location },
+                  }}
+                />
+              )
+            );
+          } else if (
+            rest.location.pathname === "/edit/:id" &&
             user_info.roles === "user"
           ) {
             return (

@@ -8,6 +8,7 @@ import { Button, Container, Grid, Paper, TextField } from "@material-ui/core";
 import Loader from "../Skeleton/skeleton";
 import AdminAppbar from "../appbar/adminAppbar";
 import SearchIcon from "@material-ui/icons/Search";
+import { Link } from "react-router-dom";
 
 const root = {
   backgroundImage: "linear-gradient(to top right, #291524, black)",
@@ -34,6 +35,7 @@ const paperstyle = {
 };
 const buttonStyle = {
   marginRight: "15px",
+  textDecoration: "none",
 };
 
 const responsive = {
@@ -89,9 +91,7 @@ function AdminDashboard(props) {
 
   const searchFunction = (e) => {
     e.preventDefault();
-    // 1. search text
     const searchText = e.target.value;
-    // 2. find in main array
     setVideoData([
       ...props.videos.videos.filter((item) => {
         console.log("divij - inside - ", item.title);
@@ -102,8 +102,6 @@ function AdminDashboard(props) {
       }),
     ]);
     console.log("divij - videoData = ", videoData);
-    // 3. setState that searched content
-    // 4. display content
   };
 
   return (
@@ -196,13 +194,17 @@ function AdminDashboard(props) {
                             margin: "3px 0px 5px 5px",
                             justifyContent: "flex-start",
                           }}>
-                          <Button
-                            style={buttonStyle}
-                            variant="outlined"
-                            size="small"
-                            color="primary">
-                            Edit
-                          </Button>
+                          <Link
+                            style={{ textDecoration: "none" }}
+                            to={`/edit/${item.id}`}>
+                            <Button
+                              style={buttonStyle}
+                              variant="outlined"
+                              size="small"
+                              color="primary">
+                              Edit
+                            </Button>
+                          </Link>
                           <Button
                             variant="outlined"
                             size="small"
@@ -252,13 +254,17 @@ function AdminDashboard(props) {
                             margin: "3px 0px 5px 5px",
                             justifyContent: "flex-start",
                           }}>
-                          <Button
-                            style={buttonStyle}
-                            variant="outlined"
-                            size="small"
-                            color="primary">
-                            Edit
-                          </Button>
+                          <Link
+                            style={{ textDecoration: "none" }}
+                            to={`/edit/${item.id}`}>
+                            <Button
+                              style={buttonStyle}
+                              variant="outlined"
+                              size="small"
+                              color="primary">
+                              Edit
+                            </Button>
+                          </Link>
                           <Button
                             variant="outlined"
                             size="small"
@@ -322,13 +328,17 @@ function AdminDashboard(props) {
                             margin: "3px 0px 5px 5px",
                             justifyContent: "flex-start",
                           }}>
-                          <Button
-                            style={buttonStyle}
-                            variant="outlined"
-                            size="small"
-                            color="primary">
-                            Edit
-                          </Button>
+                          <Link
+                            style={{ textDecoration: "none" }}
+                            to={`/edit/${item.id}`}>
+                            <Button
+                              style={buttonStyle}
+                              variant="outlined"
+                              size="small"
+                              color="primary">
+                              Edit
+                            </Button>
+                          </Link>
                           <Button
                             variant="outlined"
                             size="small"
@@ -392,13 +402,17 @@ function AdminDashboard(props) {
                             margin: "3px 0px 5px 5px",
                             justifyContent: "flex-start",
                           }}>
-                          <Button
-                            style={buttonStyle}
-                            variant="outlined"
-                            size="small"
-                            color="primary">
-                            Edit
-                          </Button>
+                          <Link
+                            style={{ textDecoration: "none" }}
+                            to={`/edit/${item.id}`}>
+                            <Button
+                              style={buttonStyle}
+                              variant="outlined"
+                              size="small"
+                              color="primary">
+                              Edit
+                            </Button>
+                          </Link>
                           <Button
                             variant="outlined"
                             size="small"
@@ -461,13 +475,17 @@ function AdminDashboard(props) {
                             margin: "3px 0px 5px 5px",
                             justifyContent: "flex-start",
                           }}>
-                          <Button
-                            style={buttonStyle}
-                            variant="outlined"
-                            size="small"
-                            color="primary">
-                            Edit
-                          </Button>
+                          <Link
+                            style={{ textDecoration: "none" }}
+                            to={`/edit/${item.id}`}>
+                            <Button
+                              style={buttonStyle}
+                              variant="outlined"
+                              size="small"
+                              color="primary">
+                              Edit
+                            </Button>
+                          </Link>
                           <Button
                             variant="outlined"
                             size="small"
@@ -531,13 +549,17 @@ function AdminDashboard(props) {
                             margin: "3px 0px 5px 5px",
                             justifyContent: "flex-start",
                           }}>
-                          <Button
-                            style={buttonStyle}
-                            variant="outlined"
-                            size="small"
-                            color="primary">
-                            Edit
-                          </Button>
+                          <Link
+                            style={{ textDecoration: "none" }}
+                            to={`/edit/${item.id}`}>
+                            <Button
+                              style={buttonStyle}
+                              variant="outlined"
+                              size="small"
+                              color="primary">
+                              Edit
+                            </Button>
+                          </Link>
                           <Button
                             variant="outlined"
                             size="small"
@@ -601,13 +623,17 @@ function AdminDashboard(props) {
                             margin: "3px 0px 5px 5px",
                             justifyContent: "flex-start",
                           }}>
-                          <Button
-                            style={buttonStyle}
-                            variant="outlined"
-                            size="small"
-                            color="primary">
-                            Edit
-                          </Button>
+                          <Link
+                            style={{ textDecoration: "none" }}
+                            to={`/edit/${item.id}`}>
+                            <Button
+                              style={buttonStyle}
+                              variant="outlined"
+                              size="small"
+                              color="primary">
+                              Edit
+                            </Button>
+                          </Link>
                           <Button
                             variant="outlined"
                             size="small"
@@ -671,13 +697,17 @@ function AdminDashboard(props) {
                             margin: "3px 0px 5px 5px",
                             justifyContent: "flex-start",
                           }}>
-                          <Button
-                            style={buttonStyle}
-                            variant="outlined"
-                            size="small"
-                            color="primary">
-                            Edit
-                          </Button>
+                          <Link
+                            style={{ textDecoration: "none" }}
+                            to={`/edit/${item.id}`}>
+                            <Button
+                              style={buttonStyle}
+                              variant="outlined"
+                              size="small"
+                              color="primary">
+                              Edit
+                            </Button>
+                          </Link>
                           <Button
                             variant="outlined"
                             size="small"
@@ -741,13 +771,17 @@ function AdminDashboard(props) {
                             margin: "3px 0px 5px 5px",
                             justifyContent: "flex-start",
                           }}>
-                          <Button
-                            style={buttonStyle}
-                            variant="outlined"
-                            size="small"
-                            color="primary">
-                            Edit
-                          </Button>
+                          <Link
+                            style={{ textDecoration: "none" }}
+                            to={`/edit/${item.id}`}>
+                            <Button
+                              style={buttonStyle}
+                              variant="outlined"
+                              size="small"
+                              color="primary">
+                              Edit
+                            </Button>
+                          </Link>
                           <Button
                             variant="outlined"
                             size="small"
