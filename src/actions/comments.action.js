@@ -1,11 +1,12 @@
 import axios from "axios";
+import { DOMAIN } from "../constants";
 import { LOADING, ADD_COMMENT, GET_COMMENT } from "./types";
 
 export const add_comment = (data) => (dispatch) => {
   console.log("add_comment actions data", data);
   dispatch({ type: LOADING });
   axios
-    .post("/api/comments/saveComment", data)
+    .post(`${DOMAIN}/api/comments/saveComment`, data)
     .then((res) => {
       console.log("add_comment res - ", res.data);
       if (res.data.success) {
@@ -30,7 +31,7 @@ export const add_comment = (data) => (dispatch) => {
 export const get_comment = (data) => (dispatch) => {
   dispatch({ type: LOADING });
   axios
-    .post("/api/comments/getComments", data)
+    .post(`${DOMAIN}/api/comments/getComments`, data)
     .then((res) => {
       if (res.data.success) {
         console.log("getcomment then - ", res.data);

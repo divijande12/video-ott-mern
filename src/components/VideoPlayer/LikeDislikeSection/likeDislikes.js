@@ -8,6 +8,7 @@ import ThumbDownAltOutlinedIcon from "@material-ui/icons/ThumbDownAltOutlined";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import { connect } from "react-redux";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
+import { DOMAIN } from "../../../constants";
 
 function LikeDislikes(props) {
   const [likes, setLikes] = useState(0);
@@ -20,90 +21,102 @@ function LikeDislikes(props) {
   const video_id = props.video_id;
   useEffect(() => {
     console.log("useEffect - ", props);
-    axios.post("/api/like/getLikes", { video_id, user }).then((res) => {
-      console.log("res getlikes - ", res);
+    axios
+      .post(`${DOMAIN}/api/like/getLikes`, { video_id, user })
+      .then((res) => {
+        console.log("res getlikes - ", res);
 
-      if (res.data.success) {
-        setLikes(res.data.message.length);
+        if (res.data.success) {
+          setLikes(res.data.message.length);
 
-        res.data.message.map((message) => {
-          console.log(props.user);
-          if (message.user === props.user.user_info.id) {
-            setLikeAction("liked");
-          }
-        });
-      } else {
-        console.log("failed to get likes");
-      }
-    });
-    axios.post("/api/like/getDisLikes", { video_id, user }).then((res) => {
-      console.log("res getdislikes - ", res);
+          res.data.message.map((message) => {
+            console.log(props.user);
+            if (message.user === props.user.user_info.id) {
+              setLikeAction("liked");
+            }
+          });
+        } else {
+          console.log("failed to get likes");
+        }
+      });
+    axios
+      .post(`${DOMAIN}/api/like/getDisLikes`, { video_id, user })
+      .then((res) => {
+        console.log("res getdislikes - ", res);
 
-      if (res.data.success) {
-        setDislikes(res.data.message.length);
+        if (res.data.success) {
+          setDislikes(res.data.message.length);
 
-        res.data.message.map((message) => {
-          if (message.user === props.user.user_info.id) {
-            setLikeAction("disliked");
-          }
-        });
-      } else {
-        console.log("failed to get likes");
-      }
-    });
+          res.data.message.map((message) => {
+            if (message.user === props.user.user_info.id) {
+              setLikeAction("disliked");
+            }
+          });
+        } else {
+          console.log("failed to get likes");
+        }
+      });
   }, []);
 
   const onLike = () => {
     if (likeAction === null) {
-      axios.post("/api/like/uplike", { video_id, user }).then((res) => {
-        if (res.data.success) {
-          setLikes(likes + 1);
-          setLikeAction("liked");
+      axios
+        .post(`${DOMAIN}/api/like/uplike`, { video_id, user })
+        .then((res) => {
+          if (res.data.success) {
+            setLikes(likes + 1);
+            setLikeAction("liked");
 
-          if (dislikeAction !== null) {
-            setDislikes(dislikes - 1);
-            setDislikeAction(null);
+            if (dislikeAction !== null) {
+              setDislikes(dislikes - 1);
+              setDislikeAction(null);
+            }
+          } else {
+            console.log("failed to increase the like");
           }
-        } else {
-          console.log("failed to increase the like");
-        }
-      });
+        });
     } else {
-      axios.post("/api/like/unlike", { video_id, user }).then((res) => {
-        if (res.data.success) {
-          setLikes(likes - 1);
-          setLikeAction(null);
-        } else {
-          console.log("failed to decrease the like");
-        }
-      });
+      axios
+        .post(`${DOMAIN}/api/like/unlike`, { video_id, user })
+        .then((res) => {
+          if (res.data.success) {
+            setLikes(likes - 1);
+            setLikeAction(null);
+          } else {
+            console.log("failed to decrease the like");
+          }
+        });
     }
   };
 
   const onDislike = () => {
     if (dislikeAction !== null) {
-      axios.post("/api/like/undislike", { video_id, user }).then((res) => {
-        if (res.data.success) {
-          setDislikes(dislikes - 1);
-          setDislikeAction(null);
-        } else {
-          console.log("failed to decrease the like");
-        }
-      });
-    } else {
-      axios.post("/api/like/updislike", { video_id, user }).then((res) => {
-        if (res.data.success) {
-          setDislikes(dislikes + 1);
-          setDislikeAction("disliked");
-
-          if (likeAction !== null) {
-            setLikeAction(null);
-            setLikes(likes - 1);
+      axios
+        .post(`${DOMAIN}/api/like/undislike`, { video_id, user })
+        .then((res) => {
+          if (res.data.success) {
+            setDislikes(dislikes - 1);
+            setDislikeAction(null);
+          } else {
+            console.log("failed to decrease the like");
           }
-        } else {
-          console.log("failed to increase dislike");
-        }
-      });
+        });
+    } else {
+      axios
+        .post(`${DOMAIN}/api/like/updislike`, { video_id, user })
+        .then((res) => {
+          if (res.data.success) {
+            setDislikes(dislikes + 1);
+            setDislikeAction("disliked");
+
+            if (likeAction !== null) {
+              setLikeAction(null);
+              setLikes(likes - 1);
+            }
+          } else {
+            console.log("failed to increase dislike");
+          }
+        });
     }
   };
   return (
