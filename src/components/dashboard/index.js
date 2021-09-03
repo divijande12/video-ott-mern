@@ -5,10 +5,16 @@ import { Image } from "cloudinary-react";
 import { connect } from "react-redux";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { Container, Grid, Paper, TextField } from "@material-ui/core";
+import {
+  Container,
+  Grid,
+  IconButton,
+  Paper,
+  TextField,
+} from "@material-ui/core";
 import Loader from "../Skeleton/skeleton";
 import SearchIcon from "@material-ui/icons/Search";
-// import swal from "sweetalert";
+import CloseIcon from "@material-ui/icons/Close";
 
 const root = {
   backgroundImage: "linear-gradient(to top right, #291524, black)",
@@ -65,6 +71,7 @@ const responsive = {
 function Dashboard(props) {
   const [loading, setLoading] = useState(false);
   const [videoData, setVideoData] = useState([]);
+  const [search, setSearch] = useState("");
   useEffect(() => {
     props.get_video();
     setLoading(true);
@@ -95,6 +102,7 @@ function Dashboard(props) {
     e.preventDefault();
     // 1. search text
     const searchText = e.target.value;
+    setSearch(searchText);
     // 2. find in main array
     setVideoData([
       ...props.videos.videos.filter((item) => {
@@ -108,6 +116,10 @@ function Dashboard(props) {
     console.log("divij - videoData = ", videoData);
     // 3. setState that searched content
     // 4. display content
+  };
+  const clearSearch = () => {
+    setVideoData([]);
+    setSearch("");
   };
 
   return (
@@ -123,15 +135,23 @@ function Dashboard(props) {
             alignItems: "center",
           }}>
           <Grid container spacing={1} alignItems="flex-end">
-            <Grid item>
-              <SearchIcon />
-            </Grid>
+            <IconButton type="submit" aria-label="search">
+              {videoData.length === 0 ? (
+                <SearchIcon style={{ color: "white", marginBottom: "-5px" }} />
+              ) : (
+                <CloseIcon
+                  style={{ color: "white", marginBottom: "-5px" }}
+                  onClick={clearSearch}
+                />
+              )}
+            </IconButton>
             <Grid item xs={10} sm={6}>
               <TextField
                 id="standard-name"
                 color="secondary"
                 label="Search"
                 onChangeCapture={searchFunction}
+                value={search}
                 fullWidth
                 InputLabelProps={{
                   style: {

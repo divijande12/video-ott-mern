@@ -125,7 +125,7 @@ const logoStyle = {
 const container = {
   display: "flex",
   margin: "0px",
-  height: "10vh",
+  height: "9vh",
   width: "100%",
   background: "rgba(64, 32, 57, 0.8)",
   top: 0,
