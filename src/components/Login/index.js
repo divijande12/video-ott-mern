@@ -29,6 +29,7 @@ import logo from "../../assets/images/Untitled.png";
 import LockIcon from "@material-ui/icons/Lock";
 import image from "../../assets/images/bg1.jpg";
 import axios from "axios";
+import { DOMAIN } from "../../constants";
 
 const paperStyle = {
   padding: 15,
@@ -154,7 +155,7 @@ const Login = (props) => {
     console.log("divij ---", res);
     axios({
       method: "POST",
-      url: "http://localhost:5000/api/auth/googlelogin",
+      url: `${DOMAIN}/api/auth/googlelogin`,
       data: {
         tokenId: res.tokenId,
         name: res.profileObj.name,
@@ -177,7 +178,7 @@ const Login = (props) => {
     console.log(res);
     axios({
       method: "POST",
-      url: "http://localhost:5000/api/auth/facebooklogin",
+      url: `${DOMAIN}/api/auth/facebooklogin`,
       data: { accessToken: res.accessToken, userID: res.userID },
     }).then((res) => {
       console.log(res.data.username);

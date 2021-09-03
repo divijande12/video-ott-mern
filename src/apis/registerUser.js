@@ -1,5 +1,5 @@
 import axios from "axios";
-import { apis } from "../constants";
+import { DOMAIN } from "../constants";
 let data = null;
 export const registerUser = async (
   firstname,
@@ -10,7 +10,7 @@ export const registerUser = async (
   roles
 ) => {
   await axios
-    .post(`${apis.register}`, {
+    .post(`${DOMAIN}/api/auth/signup`, {
       firstname,
       lastname,
       username,

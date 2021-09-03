@@ -20,6 +20,7 @@ import { useForm } from "react-hook-form";
 import { useToasts } from "react-toast-notifications";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
+import { DOMAIN } from "../../constants";
 
 const root = {
   backgroundImage: "linear-gradient(to top right, #291524, black)",
@@ -100,7 +101,7 @@ export default function EditVideo(props) {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/videos/get/${props.match.params.id}`)
+      .get(`${DOMAIN}/api/videos/get/${props.match.params.id}`)
       .then((res) => {
         setTitle(res.data.title);
         setDescription(res.data.description);
@@ -131,7 +132,7 @@ export default function EditVideo(props) {
   const submitData = (e) => {
     const editVideo = () => {
       axios
-        .put(`http://localhost:5000/api/videos/${props.match.params.id}`, {
+        .put(`${DOMAIN}/api/videos/${props.match.params.id}`, {
           title,
           description,
           category,

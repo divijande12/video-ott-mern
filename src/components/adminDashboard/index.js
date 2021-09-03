@@ -4,11 +4,25 @@ import { Image } from "cloudinary-react";
 import { connect } from "react-redux";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { Button, Container, Grid, Paper, TextField } from "@material-ui/core";
+import {
+  Container,
+  Grid,
+  IconButton,
+  Paper,
+  TextField,
+} from "@material-ui/core";
 import Loader from "../Skeleton/skeleton";
 import AdminAppbar from "../appbar/adminAppbar";
 import SearchIcon from "@material-ui/icons/Search";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import swal from "sweetalert";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
+import Tooltip from "@material-ui/core/Tooltip";
+import Fade from "@material-ui/core/Fade";
+import CloseIcon from "@material-ui/icons/Close";
+import { DOMAIN } from "../../constants";
 
 const root = {
   backgroundImage: "linear-gradient(to top right, #291524, black)",
@@ -34,7 +48,7 @@ const paperstyle = {
   fontFamily: "sans-serif",
 };
 const buttonStyle = {
-  marginRight: "15px",
+  marginRight: "5px",
   textDecoration: "none",
 };
 
@@ -68,6 +82,7 @@ const responsive = {
 function AdminDashboard(props) {
   const [loading, setLoading] = useState(false);
   const [videoData, setVideoData] = useState([]);
+  const [search, setSearch] = useState("");
   useEffect(() => {
     props.get_video();
     setLoading(true);
@@ -92,6 +107,7 @@ function AdminDashboard(props) {
   const searchFunction = (e) => {
     e.preventDefault();
     const searchText = e.target.value;
+    setSearch(searchText);
     setVideoData([
       ...props.videos.videos.filter((item) => {
         console.log("divij - inside - ", item.title);
@@ -101,7 +117,31 @@ function AdminDashboard(props) {
         return false;
       }),
     ]);
-    console.log("divij - videoData = ", videoData);
+  };
+
+  const Delete = (e) => {
+    e.preventDefault();
+    const id = e.currentTarget.id;
+    console.log("divijdelete-", id);
+    axios.delete(`${DOMAIN}/api/videos/${id}`);
+    swal({
+      title: "Are you sure?",
+      text: `Are you sure that you want to delete?`,
+      icon: "warning",
+      dangerMode: true,
+    }).then((Delete) => {
+      if (Delete) {
+        swal("Deleted!", "Your video has been deleted!", "success");
+      }
+    });
+    setTimeout(() => {
+      props.get_video();
+    }, 2000);
+  };
+
+  const clearSearch = () => {
+    setVideoData([]);
+    setSearch("");
   };
 
   return (
@@ -117,15 +157,24 @@ function AdminDashboard(props) {
             alignItems: "center",
           }}>
           <Grid container spacing={1} alignItems="flex-end">
-            <Grid item>
-              <SearchIcon />
-            </Grid>
+            <IconButton type="submit" aria-label="search">
+              {videoData.length === 0 ? (
+                <SearchIcon style={{ color: "white", marginBottom: "-5px" }} />
+              ) : (
+                <CloseIcon
+                  style={{ color: "white", marginBottom: "-5px" }}
+                  onClick={clearSearch}
+                />
+              )}
+            </IconButton>
+
             <Grid item xs={10} sm={6}>
               <TextField
                 id="standard-name"
                 color="secondary"
                 label="Search"
                 onChangeCapture={searchFunction}
+                value={search}
                 fullWidth
                 InputLabelProps={{
                   style: {
@@ -197,20 +246,36 @@ function AdminDashboard(props) {
                           <Link
                             style={{ textDecoration: "none" }}
                             to={`/edit/${item.id}`}>
-                            <Button
-                              style={buttonStyle}
-                              variant="outlined"
-                              size="small"
-                              color="primary">
-                              Edit
-                            </Button>
+                            <Tooltip
+                              title="Edit"
+                              placement="bottom"
+                              arrow
+                              TransitionComponent={Fade}
+                              TransitionProps={{ timeout: 400 }}>
+                              <IconButton
+                                style={buttonStyle}
+                                variant="outlined"
+                                size="small"
+                                color="primary">
+                                <EditIcon />
+                              </IconButton>
+                            </Tooltip>
                           </Link>
-                          <Button
-                            variant="outlined"
-                            size="small"
-                            color="secondary">
-                            Delete
-                          </Button>
+                          <Tooltip
+                            title="Delete"
+                            placement="right"
+                            arrow
+                            TransitionComponent={Fade}
+                            TransitionProps={{ timeout: 400 }}>
+                            <IconButton
+                              variant="outlined"
+                              onClick={Delete}
+                              id={item.id}
+                              size="small"
+                              color="secondary">
+                              <DeleteIcon />
+                            </IconButton>
+                          </Tooltip>
                         </div>
                       </div>
                     ))
@@ -257,20 +322,36 @@ function AdminDashboard(props) {
                           <Link
                             style={{ textDecoration: "none" }}
                             to={`/edit/${item.id}`}>
-                            <Button
-                              style={buttonStyle}
-                              variant="outlined"
-                              size="small"
-                              color="primary">
-                              Edit
-                            </Button>
+                            <Tooltip
+                              title="Edit"
+                              placement="bottom"
+                              arrow
+                              TransitionComponent={Fade}
+                              TransitionProps={{ timeout: 400 }}>
+                              <IconButton
+                                style={buttonStyle}
+                                variant="outlined"
+                                size="small"
+                                color="primary">
+                                <EditIcon />
+                              </IconButton>
+                            </Tooltip>
                           </Link>
-                          <Button
-                            variant="outlined"
-                            size="small"
-                            color="secondary">
-                            Delete
-                          </Button>
+                          <Tooltip
+                            title="Delete"
+                            placement="right"
+                            arrow
+                            TransitionComponent={Fade}
+                            TransitionProps={{ timeout: 400 }}>
+                            <IconButton
+                              variant="outlined"
+                              onClick={Delete}
+                              id={item.id}
+                              size="small"
+                              color="secondary">
+                              <DeleteIcon />
+                            </IconButton>
+                          </Tooltip>
                         </div>
                       </div>
                     ))}
@@ -331,20 +412,36 @@ function AdminDashboard(props) {
                           <Link
                             style={{ textDecoration: "none" }}
                             to={`/edit/${item.id}`}>
-                            <Button
-                              style={buttonStyle}
-                              variant="outlined"
-                              size="small"
-                              color="primary">
-                              Edit
-                            </Button>
+                            <Tooltip
+                              title="Edit"
+                              placement="bottom"
+                              arrow
+                              TransitionComponent={Fade}
+                              TransitionProps={{ timeout: 400 }}>
+                              <IconButton
+                                style={buttonStyle}
+                                variant="outlined"
+                                size="small"
+                                color="primary">
+                                <EditIcon />
+                              </IconButton>
+                            </Tooltip>
                           </Link>
-                          <Button
-                            variant="outlined"
-                            size="small"
-                            color="secondary">
-                            Delete
-                          </Button>
+                          <Tooltip
+                            title="Delete"
+                            placement="right"
+                            arrow
+                            TransitionComponent={Fade}
+                            TransitionProps={{ timeout: 400 }}>
+                            <IconButton
+                              variant="outlined"
+                              onClick={Delete}
+                              id={item.id}
+                              size="small"
+                              color="secondary">
+                              <DeleteIcon />
+                            </IconButton>
+                          </Tooltip>
                         </div>
                       </div>
                     ))}
@@ -405,20 +502,36 @@ function AdminDashboard(props) {
                           <Link
                             style={{ textDecoration: "none" }}
                             to={`/edit/${item.id}`}>
-                            <Button
-                              style={buttonStyle}
-                              variant="outlined"
-                              size="small"
-                              color="primary">
-                              Edit
-                            </Button>
+                            <Tooltip
+                              title="Edit"
+                              placement="bottom"
+                              arrow
+                              TransitionComponent={Fade}
+                              TransitionProps={{ timeout: 400 }}>
+                              <IconButton
+                                style={buttonStyle}
+                                variant="outlined"
+                                size="small"
+                                color="primary">
+                                <EditIcon />
+                              </IconButton>
+                            </Tooltip>
                           </Link>
-                          <Button
-                            variant="outlined"
-                            size="small"
-                            color="secondary">
-                            Delete
-                          </Button>
+                          <Tooltip
+                            title="Delete"
+                            placement="right"
+                            arrow
+                            TransitionComponent={Fade}
+                            TransitionProps={{ timeout: 400 }}>
+                            <IconButton
+                              variant="outlined"
+                              onClick={Delete}
+                              id={item.id}
+                              size="small"
+                              color="secondary">
+                              <DeleteIcon />
+                            </IconButton>
+                          </Tooltip>
                         </div>
                       </div>
                     ))}
@@ -478,20 +591,36 @@ function AdminDashboard(props) {
                           <Link
                             style={{ textDecoration: "none" }}
                             to={`/edit/${item.id}`}>
-                            <Button
-                              style={buttonStyle}
-                              variant="outlined"
-                              size="small"
-                              color="primary">
-                              Edit
-                            </Button>
+                            <Tooltip
+                              title="Edit"
+                              placement="bottom"
+                              arrow
+                              TransitionComponent={Fade}
+                              TransitionProps={{ timeout: 400 }}>
+                              <IconButton
+                                style={buttonStyle}
+                                variant="outlined"
+                                size="small"
+                                color="primary">
+                                <EditIcon />
+                              </IconButton>
+                            </Tooltip>
                           </Link>
-                          <Button
-                            variant="outlined"
-                            size="small"
-                            color="secondary">
-                            Delete
-                          </Button>
+                          <Tooltip
+                            title="Delete"
+                            placement="right"
+                            arrow
+                            TransitionComponent={Fade}
+                            TransitionProps={{ timeout: 400 }}>
+                            <IconButton
+                              variant="outlined"
+                              onClick={Delete}
+                              id={item.id}
+                              size="small"
+                              color="secondary">
+                              <DeleteIcon />
+                            </IconButton>
+                          </Tooltip>
                         </div>
                       </div>
                     ))}
@@ -552,20 +681,36 @@ function AdminDashboard(props) {
                           <Link
                             style={{ textDecoration: "none" }}
                             to={`/edit/${item.id}`}>
-                            <Button
-                              style={buttonStyle}
-                              variant="outlined"
-                              size="small"
-                              color="primary">
-                              Edit
-                            </Button>
+                            <Tooltip
+                              title="Edit"
+                              placement="bottom"
+                              arrow
+                              TransitionComponent={Fade}
+                              TransitionProps={{ timeout: 400 }}>
+                              <IconButton
+                                style={buttonStyle}
+                                variant="outlined"
+                                size="small"
+                                color="primary">
+                                <EditIcon />
+                              </IconButton>
+                            </Tooltip>
                           </Link>
-                          <Button
-                            variant="outlined"
-                            size="small"
-                            color="secondary">
-                            Delete
-                          </Button>
+                          <Tooltip
+                            title="Delete"
+                            placement="right"
+                            arrow
+                            TransitionComponent={Fade}
+                            TransitionProps={{ timeout: 400 }}>
+                            <IconButton
+                              variant="outlined"
+                              onClick={Delete}
+                              id={item.id}
+                              size="small"
+                              color="secondary">
+                              <DeleteIcon />
+                            </IconButton>
+                          </Tooltip>
                         </div>
                       </div>
                     ))}
@@ -626,20 +771,36 @@ function AdminDashboard(props) {
                           <Link
                             style={{ textDecoration: "none" }}
                             to={`/edit/${item.id}`}>
-                            <Button
-                              style={buttonStyle}
-                              variant="outlined"
-                              size="small"
-                              color="primary">
-                              Edit
-                            </Button>
+                            <Tooltip
+                              title="Edit"
+                              placement="bottom"
+                              arrow
+                              TransitionComponent={Fade}
+                              TransitionProps={{ timeout: 400 }}>
+                              <IconButton
+                                style={buttonStyle}
+                                variant="outlined"
+                                size="small"
+                                color="primary">
+                                <EditIcon />
+                              </IconButton>
+                            </Tooltip>
                           </Link>
-                          <Button
-                            variant="outlined"
-                            size="small"
-                            color="secondary">
-                            Delete
-                          </Button>
+                          <Tooltip
+                            title="Delete"
+                            placement="right"
+                            arrow
+                            TransitionComponent={Fade}
+                            TransitionProps={{ timeout: 400 }}>
+                            <IconButton
+                              variant="outlined"
+                              onClick={Delete}
+                              id={item.id}
+                              size="small"
+                              color="secondary">
+                              <DeleteIcon />
+                            </IconButton>
+                          </Tooltip>
                         </div>
                       </div>
                     ))}
@@ -700,20 +861,36 @@ function AdminDashboard(props) {
                           <Link
                             style={{ textDecoration: "none" }}
                             to={`/edit/${item.id}`}>
-                            <Button
-                              style={buttonStyle}
-                              variant="outlined"
-                              size="small"
-                              color="primary">
-                              Edit
-                            </Button>
+                            <Tooltip
+                              title="Edit"
+                              placement="bottom"
+                              arrow
+                              TransitionComponent={Fade}
+                              TransitionProps={{ timeout: 400 }}>
+                              <IconButton
+                                style={buttonStyle}
+                                variant="outlined"
+                                size="small"
+                                color="primary">
+                                <EditIcon />
+                              </IconButton>
+                            </Tooltip>
                           </Link>
-                          <Button
-                            variant="outlined"
-                            size="small"
-                            color="secondary">
-                            Delete
-                          </Button>
+                          <Tooltip
+                            title="Delete"
+                            placement="right"
+                            arrow
+                            TransitionComponent={Fade}
+                            TransitionProps={{ timeout: 400 }}>
+                            <IconButton
+                              variant="outlined"
+                              onClick={Delete}
+                              id={item.id}
+                              size="small"
+                              color="secondary">
+                              <DeleteIcon />
+                            </IconButton>
+                          </Tooltip>
                         </div>
                       </div>
                     ))}
@@ -774,20 +951,36 @@ function AdminDashboard(props) {
                           <Link
                             style={{ textDecoration: "none" }}
                             to={`/edit/${item.id}`}>
-                            <Button
-                              style={buttonStyle}
-                              variant="outlined"
-                              size="small"
-                              color="primary">
-                              Edit
-                            </Button>
+                            <Tooltip
+                              title="Edit"
+                              placement="bottom"
+                              arrow
+                              TransitionComponent={Fade}
+                              TransitionProps={{ timeout: 400 }}>
+                              <IconButton
+                                style={buttonStyle}
+                                variant="outlined"
+                                size="small"
+                                color="primary">
+                                <EditIcon />
+                              </IconButton>
+                            </Tooltip>
                           </Link>
-                          <Button
-                            variant="outlined"
-                            size="small"
-                            color="secondary">
-                            Delete
-                          </Button>
+                          <Tooltip
+                            title="Delete"
+                            placement="right"
+                            arrow
+                            TransitionComponent={Fade}
+                            TransitionProps={{ timeout: 400 }}>
+                            <IconButton
+                              variant="outlined"
+                              onClick={Delete}
+                              id={item.id}
+                              size="small"
+                              color="secondary">
+                              <DeleteIcon />
+                            </IconButton>
+                          </Tooltip>
                         </div>
                       </div>
                     ))}

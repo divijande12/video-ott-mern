@@ -142,10 +142,14 @@ function AddVideo(props) {
     setCategory("");
     setVideoId("");
     setThumbnail("");
-    addToast("Video Uploaded Successfully", {
-      appearance: "success",
-      autoDismiss: true,
-    });
+
+    setTimeout(() => {
+      addToast("Video Uploaded Successfully", {
+        appearance: "success",
+        autoDismiss: true,
+      });
+      props.history.push("/admin-dashboard");
+    }, 4000);
   };
 
   return (

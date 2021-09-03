@@ -1,9 +1,9 @@
 import axios from "axios";
-import { apis } from "../constants";
+import { DOMAIN } from "../constants";
 let data = null;
 export const loginUser = async (username, password, roles) => {
   await axios
-    .post(`${apis.login}`, {
+    .post(`${DOMAIN}/api/auth/signin`, {
       username,
       password,
       roles,
